@@ -1,16 +1,37 @@
-# React + Vite
+# GDG on Campus SJCEM
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Welcome to the official repository for the Google Developer Group (GDG) on Campus at St. John College of Engineering and Management (SJCEM).
 
-Currently, two official plugins are available:
+## 🚀 About
+This website serves as the central hub for our community, featuring upcoming events, workshops, hackathons, and organizer details. It is built to foster a thriving tech culture on campus.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🛠️ Tech Stack
+-   **Frontend**: React + Vite
+-   **Styling**: CSS Modules, Glassmorphism
+-   **Animations**: AOS, React Parallax Tilt, Typewriter Effect
+-   **Hosting**: GitHub Pages / Netlify (Recommended)
 
-## React Compiler
+## 🤝 Contributing
+We welcome contributions from the community! To contribute, please follow these steps:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+1.  **Fork** the repository.
+2.  **Create a Branch**: Do NOT push directly to `main`. Create a new branch for your feature or fix.
+    ```bash
+    git checkout -b feature/your-feature-name
+    ```
+3.  **Commit** your changes.
+    ```bash
+    git commit -m "feat: Add amazing new feature"
+    ```
+4.  **Push** to your branch.
+    ```bash
+    git push origin feature/your-feature-name
+    ```
+5.  **Open a Pull Request (PR)** against the `main` branch.
 
-## Expanding the ESLint configuration
+## 👨‍💻 Credits
+**Made by Dhiraj Chaudhari**
+*Lead Developer & Maintainer*
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+© 2025 GDG on Campus SJCEM. All rights reserved.

@@ -1,30 +1,65 @@
 import React from 'react';
+import Tilt from 'react-parallax-tilt';
+import Typewriter from 'typewriter-effect';
+import CountUp from './CountUp';
 import './Hero.css';
 
 const Hero = () => {
     return (
         <section id="home" className="hero">
             <div className="hero-background">
-                <div className="shape shape-blue"></div>
-                <div className="shape shape-red"></div>
-                <div className="shape shape-yellow"></div>
-                <div className="shape shape-green"></div>
+                <div className="contact-bg-animation" style={{ opacity: 0.5 }}>
+                    <div className="floating-shape shape-1"></div>
+                    <div className="floating-shape shape-2"></div>
+                    <div className="floating-shape shape-3"></div>
+                </div>
+                <div className="hero-video-wrapper">
+                    <iframe
+                        src="https://www.youtube.com/embed/9nVEfjmDlVk?autoplay=1&mute=1&controls=0&loop=1&playlist=9nVEfjmDlVk&showinfo=0&rel=0&iv_load_policy=3&disablekb=1&modestbranding=1&start=10&vq=hd1080&enablejsapi=1"
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        title="Hero Background Video"
+                    ></iframe>
+                    <div className="hero-overlay"></div>
+                </div>
             </div>
             <div className="container hero-content">
                 <div className="hero-text">
-                    <div
-                        className="hero-badge"
-                        data-aos="fade-down"
-                        data-aos-delay="200"
+                    <Tilt
+                        tiltMaxAngleX={10}
+                        tiltMaxAngleY={10}
+                        perspective={1000}
+                        scale={1.05}
+                        transitionSpeed={1000}
+                        className="tilt-badge"
                     >
-                        Welcome to our community
-                    </div>
+                        <div
+                            className="hero-badge"
+                            data-aos="fade-down"
+                            data-aos-delay="200"
+                        >
+                            <span className="badge-icon">✨</span> Welcome to our community
+                        </div>
+                    </Tilt>
                     <h1
                         className="hero-title"
                         data-aos="fade-up"
                         data-aos-delay="300"
                     >
-                        Google Developer Group <br />
+                        <Typewriter
+                            options={{
+                                strings: [
+                                    'Google Developer Group',
+                                    'Building the Future',
+                                    'Innovating Together',
+                                    'Learning & Growing'
+                                ],
+                                autoStart: true,
+                                loop: true,
+                                deleteSpeed: 50,
+                            }}
+                        />
                         <span className="highlight">on Campus SJCEM</span>
                     </h1>
                     <p
@@ -40,8 +75,16 @@ const Hero = () => {
                         data-aos-delay="500"
                     >
                         <div className="stat-item">
-                            <span className="stat-number">1045+</span>
+                            <span className="stat-number"><CountUp end={1045} suffix="+" /></span>
                             <span className="stat-label">Community Members</span>
+                        </div>
+                        <div className="stat-item">
+                            <span className="stat-number"><CountUp end={2} suffix="+" /></span>
+                            <span className="stat-label">Events Hosted</span>
+                        </div>
+                        <div className="stat-item">
+                            <span className="stat-number"><CountUp end={2000} suffix="+" /></span>
+                            <span className="stat-label">Participants</span>
                         </div>
                     </div>
                     <div

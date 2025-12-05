@@ -1,4 +1,9 @@
 import React from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Pagination, Navigation } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
 import './About.css';
 
 const About = () => {
@@ -24,6 +29,47 @@ const About = () => {
                         <div className="tech-item web" data-aos="fade-up" data-aos-delay="400">Web</div>
                         <div className="tech-item ai" data-aos="fade-up" data-aos-delay="450">AI/ML</div>
                         <div className="tech-item firebase" data-aos="fade-up" data-aos-delay="500">Firebase</div>
+                    </div>
+
+                    <div className="about-slider-container" data-aos="fade-up" data-aos-delay="600">
+                        <div className="slider-header" style={{ textAlign: 'center', marginBottom: '30px' }}>
+                            <span className="section-tag">Previous Events & Memories</span>
+                        </div>
+                        <Swiper
+                            modules={[Navigation, Pagination, Autoplay]}
+                            spaceBetween={30}
+                            centeredSlides={true}
+                            autoplay={{
+                                delay: 3000,
+                                disableOnInteraction: false,
+                            }}
+                            pagination={{
+                                clickable: true,
+                            }}
+                            navigation={true}
+                            loop={true}
+                            className="about-swiper"
+                        >
+                            {[
+                                "https://i.ibb.co/xtMWG5bB/IMG-0354.avif",
+                                "https://i.ibb.co/mFBXVYTS/IMG-0370.avif",
+                                "https://i.ibb.co/ybtt9nh/IMG-0383.avif",
+                                "https://i.ibb.co/RGw3wqpg/IMG-0389.avif",
+                                "https://i.ibb.co/cKDyxhgw/IMG-0398.avif",
+                                "https://i.ibb.co/pjT400g4/IMG-20250924-151820514.jpg",
+                                "/images/event-1.webp",
+                                "/images/event-2.webp",
+                                "/images/event-3.webp",
+                                "/images/event-4.webp",
+                                "/images/event-5.webp"
+                            ].map((imgUrl, index) => (
+                                <SwiperSlide key={index}>
+                                    <div className="swiper-slide-content">
+                                        <img src={imgUrl} alt={`Community Event ${index + 1}`} />
+                                    </div>
+                                </SwiperSlide>
+                            ))}
+                        </Swiper>
                     </div>
                 </div>
             </div>

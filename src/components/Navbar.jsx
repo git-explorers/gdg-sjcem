@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import './Navbar.css';
 
 const Navbar = () => {
@@ -21,11 +22,12 @@ const Navbar = () => {
         </div>
 
         <div className={`nav-links ${menuOpen ? 'active' : ''}`}>
-          <a href="#home" onClick={() => setMenuOpen(false)}>Home</a>
-          <a href="#about" onClick={() => setMenuOpen(false)}>About</a>
-          <a href="#events" onClick={() => setMenuOpen(false)}>Events</a>
-          <a href="#organizers" onClick={() => setMenuOpen(false)}>Organizers</a>
-          <a href="#contact" onClick={() => setMenuOpen(false)}>Contact</a>
+          <a href="/#home" onClick={() => setMenuOpen(false)}>Home</a>
+          <a href="/#about" onClick={() => setMenuOpen(false)}>About</a>
+          <a href="/#events" onClick={() => setMenuOpen(false)}>Events</a>
+          <Link to="/gallery" onClick={() => setMenuOpen(false)}>Gallery</Link>
+          <a href="/#organizers" onClick={() => setMenuOpen(false)}>Organizers</a>
+          <a href="/#contact" onClick={() => setMenuOpen(false)}>Contact</a>
           <button className="btn btn-primary join-btn">Join Chapter</button>
         </div>
 
