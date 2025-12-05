@@ -12,7 +12,7 @@ const Events = () => {
             type: 'Info session',
             title: 'TechSprint Hackathon 2025 – Kick-Off Session | GDG on Campus SJCEM',
             description: 'Welcome to the official Kick-Off Session of TechSprint 2025! Hosted by GDG on Campus – St. John College of Engineering &...',
-            image: 'https://i.ibb.co/nMk7f1mG/blob-Iq7f-MFD.webp',
+            image: 'https://i.ibb.co/bjc6f31T/Generated-Image-December-04-2025-8-46-PM.jpg',
             showTimer: true,
             buttons: [
                 {
