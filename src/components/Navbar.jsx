@@ -25,6 +25,8 @@ const Navbar = () => {
           <a href="/#home" onClick={() => setMenuOpen(false)}>Home</a>
           <a href="/#about" onClick={() => setMenuOpen(false)}>About</a>
           <a href="/#events" onClick={() => setMenuOpen(false)}>Events</a>
+          <Link to="/projects" onClick={() => setMenuOpen(false)}>Projects</Link>
+          <Link to="/leaderboard" onClick={() => setMenuOpen(false)}>Ranking</Link>
           <Link to="/gallery" onClick={() => setMenuOpen(false)}>Gallery</Link>
           <Link to="/team" onClick={() => setMenuOpen(false)}>Team</Link>
           <a href="/#organizers" onClick={() => setMenuOpen(false)}>Organizers</a>

@@ -57,7 +57,7 @@ const Events = () => {
     return (
         <section id="events" className="section events-section">
             <div className="container">
-                <h2 className="section-title" data-aos="fade-up">Upcoming Events</h2>
+                <h2 className="section-title" data-aos="fade-down" data-aos-duration="1000">Upcoming Events</h2>
                 <div className="events-grid upcoming">
                     {upcomingEvents.map((event, index) => {
                         return (
@@ -71,8 +71,9 @@ const Events = () => {
                             >
                                 <div
                                     className="event-card upcoming-card"
-                                    data-aos="flip-left"
-                                    data-aos-delay={index * 100}
+                                    data-aos="zoom-in"
+                                    data-aos-delay={index * 150}
+                                    data-aos-duration="1200"
                                 >
                                     <div className="event-image">
                                         <img
@@ -123,12 +124,14 @@ const Events = () => {
                     })}
                 </div>
 
-                <h2 className="section-title past-title" data-aos="fade-up">Past Events</h2>
+                <h2 className="section-title past-title" data-aos="fade-right" data-aos-offset="200">Past Events</h2>
                 <div className="events-list">
                     {pastEvents.map((event, index) => (
                         <div
                             key={event.id}
                             className="event-row"
+                            data-aos="fade-up"
+                            data-aos-delay={index * 100}
                         >
                             <div className="event-date-col">
                                 <span className="date-text">{event.date}</span>

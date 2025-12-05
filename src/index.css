@@ -22,7 +22,7 @@
       var(--google-yellow) 66%,
       var(--google-green) 100%);
 
-  /* Base Colors */
+  /* Base Colors - Light Mode */
   --bg-color: #ffffff;
   --text-color: #202124;
   --surface-color: #f8f9fa;

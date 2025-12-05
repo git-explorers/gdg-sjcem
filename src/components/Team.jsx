@@ -43,6 +43,13 @@ const Team = () => {
     ];
 
     const techTeam = [
+        {
+            name: "Furquan Saiyed",
+            role: "Technical Lead",
+            image: "https://i.ibb.co/PsTLNkfk/1761723296279.jpg",
+            twitter: "https://www.linkedin.com/in/furquan-s-9331372a6",
+            bio: "I enjoy learning new technologies and helping others grow in the developer community"
+        },
         { name: 'Sumedh Patil', role: 'Technical Head', image: 'https://res.cloudinary.com/startup-grind/image/upload/c_fill,w_250,h_250,g_center/c_fill,dpr_2.0,f_auto,g_center,q_auto:good/v1/gcs/platform-data-goog/avatars/sumedh_patil_CV1e5fD.png' },
         { name: 'Shashikant Rajput', role: 'Web Lead' },
         { name: 'Prathamesh Jakkula', role: 'AIML/DSA Lead', image: 'https://media.licdn.com/dms/image/v2/D4D03AQEq9KDUDMDm9g/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1727442836862?e=2147483647&v=beta&t=jYbosW2CKm2-yxozapKCka6dc6NDoNAUi3iyc4wBTWY' },
@@ -56,7 +63,6 @@ const Team = () => {
         { name: 'Riya Singh', role: 'Tech Member' },
         { name: 'Sairaj Khade', role: 'Tech Member' },
         { name: 'Anushri Sane', role: 'Tech Member' },
-        { name: 'Saiyed Furquanahmed', role: 'Tech Lead' },
         { name: 'Sakshi Mhatre', role: 'Volunteer' },
         { name: 'Saish Mekal', role: 'Web Dev Lead' }
     ];
@@ -191,27 +197,27 @@ const Team = () => {
 
                 <div className="team-divider" style={{ margin: '4rem 0' }}></div>
 
-                <h2 className="section-title team-title" data-aos="fade-up">Tech Wizards 💻</h2>
+                <h2 className="section-title team-title" data-aos="fade-right">Tech Wizards 💻</h2>
                 <ul className="organizers-grid team-grid">
                     {techTeam.map(renderOrganizerCard)}
                 </ul>
 
-                <h2 className="section-title team-title" data-aos="fade-up" style={{ marginTop: '3rem' }}>Events & Operations 🚀</h2>
+                <h2 className="section-title team-title" data-aos="fade-left" style={{ marginTop: '3rem' }}>Events & Operations 🚀</h2>
                 <ul className="organizers-grid team-grid">
                     {eventsTeam.map(renderOrganizerCard)}
                 </ul>
 
-                <h2 className="section-title team-title" data-aos="fade-up" style={{ marginTop: '3rem' }}>Community & Marketing 🤝</h2>
+                <h2 className="section-title team-title" data-aos="fade-right" style={{ marginTop: '3rem' }}>Community & Marketing 🤝</h2>
                 <ul className="organizers-grid team-grid">
                     {communityTeam.map(renderOrganizerCard)}
                 </ul>
 
-                <h2 className="section-title team-title" data-aos="fade-up" style={{ marginTop: '3rem' }}>Media & Design 🎨</h2>
+                <h2 className="section-title team-title" data-aos="fade-left" style={{ marginTop: '3rem' }}>Media & Design 🎨</h2>
                 <ul className="organizers-grid team-grid">
                     {mediaTeam.map(renderOrganizerCard)}
                 </ul>
 
-                <h2 className="section-title team-title" data-aos="fade-up" style={{ marginTop: '3rem' }}>Content & Research 📝</h2>
+                <h2 className="section-title team-title" data-aos="fade-right" style={{ marginTop: '3rem' }}>Content & Research 📝</h2>
                 <ul className="organizers-grid team-grid">
                     {contentTeam.map(renderOrganizerCard)}
                 </ul>

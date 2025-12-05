@@ -1,6 +1,6 @@
 .events-section {
     padding: 100px 0;
-    background-color: #f8f9fa;
+    background-color: var(--surface-color);
 }
 
 .events-grid {
@@ -135,7 +135,7 @@
     font-weight: 700;
     margin-bottom: 16px;
     line-height: 1.3;
-    color: #202124;
+    color: var(--text-color);
 }
 
 .event-desc {
