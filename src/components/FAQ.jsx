@@ -37,8 +37,6 @@ const FAQ = () => {
                             key={index}
                             className={`faq-item ${activeIndex === index ? 'active' : ''}`}
                             onClick={() => toggleAccordion(index)}
-                            data-aos="fade-up"
-                            data-aos-delay={index * 100}
                         >
                             <div className="faq-question">
                                 {item.question}
