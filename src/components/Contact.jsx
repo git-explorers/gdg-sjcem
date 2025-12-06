@@ -56,33 +56,50 @@ const Contact = () => {
                             <button className="btn btn-outline" onClick={() => setSubmitted(false)}>Send Another</button>
                         </div>
                     ) : (
-                        <form
-                            action="https://formsubmit.co/gdg@sjcem.edu.in"
-                            method="POST"
-                            className="contact-form"
-                        >
-                            <input type="hidden" name="_subject" value="New Submission from GDG Website" />
-                            <input type="hidden" name="_captcha" value="false" />
-                            {/* Redirect back to the same page after submission (optional, but good UX) */}
-                            <input type="hidden" name="_next" value="http://localhost:5173/#contact" />
+                        <>
+                            {/* Hidden iframe for handling form submission without redirect */}
+                            <iframe
+                                name="hidden_iframe"
+                                id="hidden_iframe"
+                                style={{ display: 'none' }}
+                                onLoad={() => {
+                                    if (loading) {
+                                        setLoading(false);
+                                        setSubmitted(true);
+                                    }
+                                }}
+                            ></iframe>
 
-                            <div className="form-group">
-                                <input type="text" name="name" placeholder="Your Name" required className="form-input" />
-                            </div>
-                            <div className="form-group">
-                                <input type="email" name="email" placeholder="Your Email" required className="form-input" />
-                            </div>
-                            <div className="form-group">
-                                <input type="text" name="subject" placeholder="Subject" required className="form-input" />
-                            </div>
-                            <div className="form-group">
-                                <textarea name="message" rows="5" placeholder="Your Message" required className="form-input"></textarea>
-                            </div>
+                            <form
+                                action="https://formsubmit.co/gdg@sjcem.edu.in"
+                                method="POST"
+                                className="contact-form"
+                                target="hidden_iframe"
+                                onSubmit={() => setLoading(true)}
+                            >
+                                <input type="hidden" name="_subject" value="New Submission from GDG Website" />
+                                <input type="hidden" name="_captcha" value="false" />
+                                {/* IMPORTANT: Remove _next when using iframe or it might break frame policy. 
+                                    But formsubmit default is to show a page. In iframe, we don't care what it shows. */}
 
-                            <button type="submit" className="btn btn-primary submit-btn">
-                                Send Message
-                            </button>
-                        </form>
+                                <div className="form-group">
+                                    <input type="text" name="name" placeholder="Your Name" required className="form-input" />
+                                </div>
+                                <div className="form-group">
+                                    <input type="email" name="email" placeholder="Your Email" required className="form-input" />
+                                </div>
+                                <div className="form-group">
+                                    <input type="text" name="subject" placeholder="Subject" required className="form-input" />
+                                </div>
+                                <div className="form-group">
+                                    <textarea name="message" rows="5" placeholder="Your Message" required className="form-input"></textarea>
+                                </div>
+
+                                <button type="submit" className="btn btn-primary submit-btn" disabled={loading}>
+                                    {loading ? 'Sending...' : 'Send Message'}
+                                </button>
+                            </form>
+                        </>
                     )}
                 </div>
             </div>

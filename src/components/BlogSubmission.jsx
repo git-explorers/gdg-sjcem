@@ -74,14 +74,33 @@ const BlogSubmission = ({ onBack }) => {
                     <h2 className="submission-title">Share Your Knowledge</h2>
                     <p className="submission-subtitle">Have something interesting to share? Write an article for the GDG community.</p>
 
+                    {/* Hidden iframe for seamless submission */}
+                    <iframe
+                        name="hidden_blog_iframe"
+                        id="hidden_blog_iframe"
+                        style={{ display: 'none' }}
+                        onLoad={() => {
+                            // This onload fires when the iframe content changes,
+                            // which happens after formsubmit.co processes the submission.
+                            // We check 'submitting' to ensure it's a form submission completion,
+                            // not just initial iframe load.
+                            if (submitting) {
+                                setSubmitting(false);
+                                setSubmitted(true);
+                            }
+                        }}
+                    ></iframe>
+
                     <form
                         className="blog-form"
                         action="https://formsubmit.co/gdg@sjcem.edu.in"
                         method="POST"
+                        target="hidden_blog_iframe" // Target the hidden iframe
+                        onSubmit={() => setSubmitting(true)} // Set submitting state when form is submitted
                     >
                         <input type="hidden" name="_subject" value={`New Blog Submission: ${formData.title}`} />
                         <input type="hidden" name="_captcha" value="false" />
-                        <input type="hidden" name="_next" value="http://localhost:5173/blog" />
+                        {/* Remove _next as we handle success state via React/iframe onload */}
 
                         <div className="form-row">
                             <div className="form-group">
@@ -143,8 +162,8 @@ const BlogSubmission = ({ onBack }) => {
                             ></textarea>
                         </div>
 
-                        <button type="submit" className="submit-blog-btn">
-                            Submit Article
+                        <button type="submit" className="submit-blog-btn" disabled={submitting}>
+                            {submitting ? 'Submitting...' : 'Submit Article'}
                         </button>
                     </form>
                 </div>

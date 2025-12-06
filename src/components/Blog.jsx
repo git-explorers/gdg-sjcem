@@ -4,6 +4,8 @@ import BlogSubmission from './BlogSubmission';
 
 const Blog = () => {
     const [selectedPost, setSelectedPost] = useState(null);
+    const [showSubmissionForm, setShowSubmissionForm] = useState(false);
+    const [isLoadingArticle, setIsLoadingArticle] = useState(false);
 
     // Placeholder data for blog posts with GDG-relevant topics
     const blogPosts = [
@@ -71,8 +73,29 @@ const Blog = () => {
         }
     ];
 
+    const handleReadArticle = (post) => {
+        setIsLoadingArticle(true);
+        // Simulate network request
+        setTimeout(() => {
+            setSelectedPost(post);
+            setIsLoadingArticle(false);
+            window.scrollTo(0, 0);
+        }, 1000);
+    };
+
     if (showSubmissionForm) {
         return <BlogSubmission onBack={() => setShowSubmissionForm(false)} />;
+    }
+
+    if (isLoadingArticle) {
+        return (
+            <section className="blog-section">
+                <div className="blog-container" style={{ textAlign: 'center', minHeight: '50vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                    <div className="loading-spinner"></div>
+                    <p style={{ marginTop: '1rem', color: '#6b7280' }}>Loading article...</p>
+                </div>
+            </section>
+        );
     }
 
     if (selectedPost) {
@@ -120,7 +143,7 @@ const Blog = () => {
                                 </div>
                                 <h3 className="blog-card-title">{post.title}</h3>
                                 <p className="blog-excerpt">{post.excerpt}</p>
-                                <button className="read-more-btn" onClick={() => setSelectedPost(post)}>Read Article →</button>
+                                <button className="read-more-btn" onClick={() => handleReadArticle(post)}>Read Article →</button>
                             </div>
                         </div>
                     ))}
