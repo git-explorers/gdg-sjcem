@@ -107,11 +107,12 @@ const JoinTeam = () => {
                     timestamp: ''
                 });
             } else {
-                throw new Error('Submission failed');
+                const errorText = await response.text();
+                throw new Error(`Submission failed: ${response.status} ${response.statusText} - ${errorText}`);
             }
         } catch (error) {
             console.error("Error submitting form:", error);
-            alert("There was an error submitting your application. Please try again.");
+            alert(`Error submitting application: ${error.message}`);
         } finally {
             setSubmitting(false);
         }
@@ -134,8 +135,8 @@ const JoinTeam = () => {
                 ) : submitted ? (
                     <div className="success-message">
                         <div className="success-icon">🎉</div>
-                        <h2>Application Submitted!</h2>
-                        <p>Thanks for filling the form, <strong>{formData.name}</strong>. We will make sure we feature you on our GDG website.</p>
+                        <h2>You're In!</h2>
+                        <p>Thanks for applying, <strong>{formData.name}</strong>.<br />We've received your details and will review them shortly.</p>
                         <button className="reset-btn" onClick={() => setSubmitted(false)}>Submit Another Response</button>
                     </div>
                 ) : (

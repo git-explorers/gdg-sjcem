@@ -16,13 +16,36 @@ const BlogSubmission = ({ onBack }) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
         setSubmitting(true);
-        // Optimistic UI update to handle FormSubmit reliability
-        setTimeout(() => {
+
+        const form = e.target;
+        const formDataObj = new FormData(form);
+
+        // Add content manually since it might be controlled state
+        formDataObj.set('content', formData.content);
+
+        try {
+            const response = await fetch("https://api.web3forms.com/submit", {
+                method: "POST",
+                body: formDataObj
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                setSubmitted(true);
+            } else {
+                console.error("Web3Forms Blog Error:", data);
+                alert("Something went wrong with the submission: " + data.message);
+            }
+        } catch (error) {
+            console.error("Submission Error:", error);
+            alert("Error submitting article. Please check your connection.");
+        } finally {
             setSubmitting(false);
-            setSubmitted(true);
-        }, 2000);
+        }
     };
 
     if (submitted) {
@@ -52,21 +75,15 @@ const BlogSubmission = ({ onBack }) => {
                     <p className="submission-subtitle">Have something interesting to share? Write an article for the GDG community.</p>
 
                     {/* Hidden iframe for seamless submission */}
-                    <iframe
-                        name="hidden_blog_iframe"
-                        id="hidden_blog_iframe"
-                        style={{ display: 'none' }}
-                    ></iframe>
-
                     <form
                         className="blog-form"
-                        action="https://formsubmit.co/gdgsjcem@gmail.com"
-                        method="POST"
-                        target="hidden_blog_iframe"
                         onSubmit={handleSubmit}
                     >
-                        <input type="hidden" name="_subject" value={`New Blog Submission: ${formData.title}`} />
-                        <input type="hidden" name="_captcha" value="false" />
+                        {/* Hidden inputs for Web3Forms configuration */}
+                        <input type="hidden" name="access_key" value="98defd20-dee9-48a7-ac0f-e2fdd45d1f32" />
+                        <input type="hidden" name="subject" value={`New Blog Submission: ${formData.title}`} />
+                        <input type="hidden" name="from_name" value="GDG Blog Submission" />
+                        <input type="checkbox" name="botcheck" className="hidden" style={{ display: 'none' }} />
 
                         <div className="form-row">
                             <div className="form-group">

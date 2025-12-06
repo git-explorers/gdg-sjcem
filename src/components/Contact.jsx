@@ -5,14 +5,35 @@ const Contact = () => {
     const [submitted, setSubmitted] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    const handleSubmit = () => {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
         setLoading(true);
-        // Optimistic UI update: Show success after 2 seconds regardless of actual network speed/timeouts
-        // This prevents the "524 Timeout" error from Cloudflare/FormSubmit from looking like a broken app
-        setTimeout(() => {
+
+        const formData = new FormData(e.target);
+        // Access Key for Web3Forms
+        formData.append("access_key", "98defd20-dee9-48a7-ac0f-e2fdd45d1f32");
+
+        try {
+            const response = await fetch("https://api.web3forms.com/submit", {
+                method: "POST",
+                body: formData
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                setSubmitted(true);
+                e.target.reset(); // Reset form fields
+            } else {
+                console.error("Web3Forms Error:", data);
+                alert("Something went wrong. Please try again: " + data.message);
+            }
+        } catch (error) {
+            console.error("Submission Error:", error);
+            alert("Error sending message. Please check your connection.");
+        } finally {
             setLoading(false);
-            setSubmitted(true);
-        }, 2000);
+        }
     };
 
     return (
@@ -33,44 +54,29 @@ const Contact = () => {
                             <button className="btn btn-outline" onClick={() => setSubmitted(false)}>Send Another</button>
                         </div>
                     ) : (
-                        <>
-                            {/* Hidden iframe for handling form submission without redirect */}
-                            <iframe
-                                name="hidden_iframe"
-                                id="hidden_iframe"
-                                style={{ display: 'none' }}
-                            ></iframe>
+                        <form onSubmit={handleSubmit} className="contact-form">
+                            {/* Hidden inputs for Web3Forms configuration */}
+                            <input type="checkbox" name="botcheck" className="hidden" style={{ display: 'none' }} />
+                            <input type="hidden" name="subject" value="New Submission from GDG Website" />
+                            <input type="hidden" name="from_name" value="GDG Website Contact" />
 
-                            <form
-                                action="https://formsubmit.co/gdgsjcem@gmail.com"
-                                method="POST"
-                                className="contact-form"
-                                target="hidden_iframe"
-                                onSubmit={handleSubmit}
-                            >
-                                <input type="hidden" name="_subject" value="New Submission from GDG Website" />
-                                <input type="hidden" name="_captcha" value="false" />
-                                {/* IMPORTANT: Remove _next when using iframe or it might break frame policy. 
-                                    But formsubmit default is to show a page. In iframe, we don't care what it shows. */}
+                            <div className="form-group">
+                                <input type="text" name="name" placeholder="Your Name" required className="form-input" />
+                            </div>
+                            <div className="form-group">
+                                <input type="email" name="email" placeholder="Your Email" required className="form-input" />
+                            </div>
+                            <div className="form-group">
+                                <input type="text" name="subject_display" placeholder="Subject" required className="form-input" />
+                            </div>
+                            <div className="form-group">
+                                <textarea name="message" rows="5" placeholder="Your Message" required className="form-input"></textarea>
+                            </div>
 
-                                <div className="form-group">
-                                    <input type="text" name="name" placeholder="Your Name" required className="form-input" />
-                                </div>
-                                <div className="form-group">
-                                    <input type="email" name="email" placeholder="Your Email" required className="form-input" />
-                                </div>
-                                <div className="form-group">
-                                    <input type="text" name="subject" placeholder="Subject" required className="form-input" />
-                                </div>
-                                <div className="form-group">
-                                    <textarea name="message" rows="5" placeholder="Your Message" required className="form-input"></textarea>
-                                </div>
-
-                                <button type="submit" className="btn btn-primary submit-btn" disabled={loading}>
-                                    {loading ? 'Sending...' : 'Send Message'}
-                                </button>
-                            </form>
-                        </>
+                            <button type="submit" className="btn btn-primary submit-btn" disabled={loading}>
+                                {loading ? 'Sending...' : 'Send Message'}
+                            </button>
+                        </form>
                     )}
                 </div>
             </div>
