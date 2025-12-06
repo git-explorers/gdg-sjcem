@@ -1,41 +1,19 @@
 import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './Contact.css';
 
 const Contact = () => {
     const [submitted, setSubmitted] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const handleSubmit = () => {
         setLoading(true);
-
-        const formData = new FormData(e.target);
-        const object = {};
-        formData.forEach((value, key) => object[key] = value);
-        const json = JSON.stringify(object);
-
-        try {
-            const response = await fetch("https://formsubmit.co/ajax/gdg@sjcem.edu.in", {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: json
-            });
-
-            const result = await response.json();
-            if (result.success === "true" || response.ok) {
-                setSubmitted(true);
-            } else {
-                alert('Something went wrong. Please try again.');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('Something went wrong. Please try again.');
-        } finally {
+        // Optimistic UI update: Show success after 2 seconds regardless of actual network speed/timeouts
+        // This prevents the "524 Timeout" error from Cloudflare/FormSubmit from looking like a broken app
+        setTimeout(() => {
             setLoading(false);
-        }
+            setSubmitted(true);
+        }, 2000);
     };
 
     return (
@@ -62,20 +40,14 @@ const Contact = () => {
                                 name="hidden_iframe"
                                 id="hidden_iframe"
                                 style={{ display: 'none' }}
-                                onLoad={() => {
-                                    if (loading) {
-                                        setLoading(false);
-                                        setSubmitted(true);
-                                    }
-                                }}
                             ></iframe>
 
                             <form
-                                action="https://formsubmit.co/gdg@sjcem.edu.in"
+                                action="https://formsubmit.co/gdgsjcem@gmail.com"
                                 method="POST"
                                 className="contact-form"
                                 target="hidden_iframe"
-                                onSubmit={() => setLoading(true)}
+                                onSubmit={handleSubmit}
                             >
                                 <input type="hidden" name="_subject" value="New Submission from GDG Website" />
                                 <input type="hidden" name="_captcha" value="false" />

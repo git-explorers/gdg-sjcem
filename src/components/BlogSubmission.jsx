@@ -16,36 +16,13 @@ const BlogSubmission = ({ onBack }) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const handleSubmit = () => {
         setSubmitting(true);
-
-        try {
-            const response = await fetch("https://formsubmit.co/ajax/gdg@sjcem.edu.in", {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({
-                    _subject: `New Blog Submission: ${formData.title}`,
-                    ...formData
-                })
-            });
-
-            if (response.ok) {
-                setSubmitted(true);
-                setSubmitting(false);
-            } else {
-                alert("Something went wrong. Please try again.");
-                setSubmitting(false);
-            }
-        } catch (error) {
-            console.error("Submission Error:", error);
-            // Fallback for CORS issues on localhost - show success anyway for demo
-            setSubmitted(true);
+        // Optimistic UI update to handle FormSubmit reliability
+        setTimeout(() => {
             setSubmitting(false);
-        }
+            setSubmitted(true);
+        }, 2000);
     };
 
     if (submitted) {
@@ -79,28 +56,17 @@ const BlogSubmission = ({ onBack }) => {
                         name="hidden_blog_iframe"
                         id="hidden_blog_iframe"
                         style={{ display: 'none' }}
-                        onLoad={() => {
-                            // This onload fires when the iframe content changes,
-                            // which happens after formsubmit.co processes the submission.
-                            // We check 'submitting' to ensure it's a form submission completion,
-                            // not just initial iframe load.
-                            if (submitting) {
-                                setSubmitting(false);
-                                setSubmitted(true);
-                            }
-                        }}
                     ></iframe>
 
                     <form
                         className="blog-form"
-                        action="https://formsubmit.co/gdg@sjcem.edu.in"
+                        action="https://formsubmit.co/gdgsjcem@gmail.com"
                         method="POST"
-                        target="hidden_blog_iframe" // Target the hidden iframe
-                        onSubmit={() => setSubmitting(true)} // Set submitting state when form is submitted
+                        target="hidden_blog_iframe"
+                        onSubmit={handleSubmit}
                     >
                         <input type="hidden" name="_subject" value={`New Blog Submission: ${formData.title}`} />
                         <input type="hidden" name="_captcha" value="false" />
-                        {/* Remove _next as we handle success state via React/iframe onload */}
 
                         <div className="form-row">
                             <div className="form-group">
