@@ -130,7 +130,7 @@ const Team = () => {
 
     const mediaTeam = [
         { name: 'Abhijeet Rogye', role: 'Design & Media Head', image: 'https://res.cloudinary.com/startup-grind/image/upload/c_fill,w_250,h_250,g_center/c_fill,dpr_2.0,f_auto,g_center,q_auto:good/v1/gcs/platform-data-goog/avatars/abhijeet_rogye_DhOJ3Wv.jpg' },
-        { name: 'Manasvi Kadu', role: 'Social Media Head', image: 'https://media.licdn.com/dms/image/v2/D4D35AQEmVUB1ryOArA/profile-framedphoto-shrink_800_800/B4DZqM3HvqH0Ag-/0/1763299851612?e=1765569600&v=beta&t=8jkpW_MOY-oNMI8sTZGlbg_BIkk5ab_X3iAyXL2Th9s' },
+        { name: 'Manasvi Kadu', role: 'Social Media Head', image: 'https://i.ibb.co/JwP5dRqM/IMG-2300.jpg' },
         { name: 'Devanshu Pal', role: 'Social Media Manager' },
         { name: 'Sai Deepak Alim', role: 'Volunteer' },
         { name: 'Siddhant Meher', role: 'Media & Design Lead' },
