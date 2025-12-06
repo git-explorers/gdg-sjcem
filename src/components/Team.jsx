@@ -175,11 +175,15 @@ const Team = () => {
     const renderOrganizerCard = (org, index) => (
         <Tilt
             key={index}
-            tiltMaxAngleX={5}
-            tiltMaxAngleY={5}
+            tiltMaxAngleX={10}
+            tiltMaxAngleY={10}
             perspective={1000}
-            scale={1.02}
+            scale={1.05}
             transitionSpeed={400}
+            glareEnable={true}
+            glareMaxOpacity={0.2}
+            glareColor="#ffffff"
+            glarePosition="all"
             className="organizer-tilt-card"
             data-aos="fade-up"
         >
@@ -198,7 +202,7 @@ const Team = () => {
                         <ImageWithLoader
                             src={getOptimizedImageUrl(org.image, 400)}
                             alt={org.name}
-                            style={{ width: '100%', height: '100%', borderRadius: '50%' }}
+                            style={{ width: '100%', height: '100%', borderRadius: '20px', objectFit: 'cover' }}
                         />
                     ) : (
                         <span className="initials">{getInitials(org.name)}</span>
