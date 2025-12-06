@@ -58,10 +58,21 @@ const Team = () => {
         { name: 'Hitanshu Vaidya', role: 'AI/ML Lead' },
         { name: 'Ramesh Choudhary', role: 'Tech Coordinator' },
         { name: 'Prashant Yadav', role: 'App Lead' },
-        { name: 'Satyam R Tiwari', role: 'Event Coordinator' },
+        {
+            name: 'Satyam R Tiwari',
+            role: 'Backend Developer',
+            image: 'https://i.ibb.co/v6MmDcds/1000121746.jpg',
+            linkedin: 'https://www.linkedin.com/in/satyam-tiwari-219583276/',
+            github: 'https://github.com/Satyamrtiwari'
+        },
         { name: 'Satyam Ashok Mahto', role: 'Volunteer' },
         { name: 'Rudra Kushal Jaikar', role: 'Volunteer' },
-        { name: 'Kunal Bhandarkar', role: 'Tech Member' },
+        {
+            name: 'Kunal Bhandarkar',
+            role: 'Technical Team Volunteer',
+            image: 'https://i.ibb.co/fYyRkXS9/IMG-20250820-145505.jpg',
+            linkedin: 'https://www.linkedin.com/in/kunal-bhandarkar-24ba3a2b3'
+        },
         { name: 'Riya Singh', role: 'Tech Member' },
         { name: 'Sairaj Khade', role: 'Tech Member' },
         { name: 'Anushri Sane', role: 'Tech Member' },
@@ -84,7 +95,15 @@ const Team = () => {
         { name: 'Rajendra Rajput', role: 'Member' },
         { name: 'Shivprasad Umbare', role: 'Manager' },
         { name: 'Tejas Bhavthankar', role: 'Coordinator' },
-        { name: 'Vidhi Jain', role: 'Coordinator' },
+        {
+            name: 'Vidhi Jain',
+            role: 'Event Volunteer',
+            image: 'https://i.ibb.co/BH7Vc2rb/1000012426.jpg',
+            bio: "I'm Vidhi, an event member who's passionate about decor and knows how to manage an event! Still learning and exploring.",
+            linkedin: 'https://www.linkedin.com/in/vidhi-jain-b68418318',
+            github: 'https://github.com/vidhii-24',
+            instagram: 'https://www.instagram.com/vidhi_jain_._'
+        },
         { name: 'Upasana Meher', role: 'Member' },
         { name: 'Jowin Mascarenhas', role: 'Media/Volunteer' },
         { name: 'Neej Patel', role: 'Member' }
@@ -176,6 +195,30 @@ const Team = () => {
                 <div className="People-styles-info">
                     <h2 className="organizer-name-premium" dir="auto">{org.name}</h2>
                     <p className="organizer-role-premium" dir="auto">{org.role}</p>
+
+                    {/* Social Icons on Card */}
+                    <div className="card-socials" onClick={(e) => e.stopPropagation()}>
+                        {org.linkedin && (
+                            <a href={org.linkedin} target="_blank" rel="noreferrer" className="social-icon linkedin">
+                                <i className="fab fa-linkedin"></i>
+                            </a>
+                        )}
+                        {org.github && (
+                            <a href={org.github} target="_blank" rel="noreferrer" className="social-icon github">
+                                <i className="fab fa-github"></i>
+                            </a>
+                        )}
+                        {org.instagram && (
+                            <a href={org.instagram} target="_blank" rel="noreferrer" className="social-icon instagram">
+                                <i className="fab fa-instagram"></i>
+                            </a>
+                        )}
+                        {org.twitter && (
+                            <a href={org.twitter} target="_blank" rel="noreferrer" className="social-icon twitter">
+                                <i className="fab fa-twitter"></i>
+                            </a>
+                        )}
+                    </div>
                 </div>
             </li>
         </Tilt>
@@ -247,8 +290,17 @@ const Team = () => {
                             <h2 className="modal-name">{selectedOrganizer.name}</h2>
                             <p className="modal-role">{selectedOrganizer.role}</p>
                             {selectedOrganizer.bio && <p className="modal-bio">{selectedOrganizer.bio}</p>}
+                            {selectedOrganizer.linkedin && (
+                                <a href={selectedOrganizer.linkedin} target="_blank" rel="noreferrer" className="modal-social-link">LinkedIn</a>
+                            )}
+                            {selectedOrganizer.github && (
+                                <a href={selectedOrganizer.github} target="_blank" rel="noreferrer" className="modal-social-link">GitHub</a>
+                            )}
+                            {selectedOrganizer.instagram && (
+                                <a href={selectedOrganizer.instagram} target="_blank" rel="noreferrer" className="modal-social-link">Instagram</a>
+                            )}
                             {selectedOrganizer.twitter && (
-                                <a href={selectedOrganizer.twitter} target="_blank" rel="noreferrer" className="modal-social-link">View Profile</a>
+                                <a href={selectedOrganizer.twitter} target="_blank" rel="noreferrer" className="modal-social-link">Twitter/X</a>
                             )}
                         </div>
                     </div>
