@@ -9,7 +9,7 @@ This website serves as the central hub for our community, featuring upcoming eve
 -   **Frontend**: React + Vite
 -   **Styling**: CSS Modules, Glassmorphism
 -   **Animations**: AOS, React Parallax Tilt, Typewriter Effect
--   **Hosting**: GitHub Pages / Netlify (Recommended)
+-   **Hosting**: Netlify (Recommended) / Google Cloud
 
 ## 🤝 Contributing
 We welcome contributions from the community! To contribute, please follow these steps:
