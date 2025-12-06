@@ -1,21 +1,34 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import './Navbar.css';
 
-const MotionLink = motion.create(Link);
+const MotionLink = motion(Link);
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      if (location.pathname === '/') {
+        setScrolled(window.scrollY > 50);
+      } else {
+        setScrolled(true);
+      }
     };
+
+    // Initial check
+    if (location.pathname !== '/') {
+      setScrolled(true);
+    } else {
+      setScrolled(window.scrollY > 50);
+    }
+
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [location.pathname]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
