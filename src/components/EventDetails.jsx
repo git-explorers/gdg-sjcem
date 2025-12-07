@@ -358,6 +358,19 @@ const EventDetails = () => {
                                 ))}
                             </div>
                         )}
+
+                        <div className="event-projects-promo" style={{ marginTop: '2rem', borderTop: '1px solid #eee', paddingTop: '1.5rem' }}>
+                            <h4 className="sidebar-subtitle">Event Projects 🛠️</h4>
+                            <p style={{ fontSize: '0.9rem', color: '#5f6368', marginBottom: '1rem' }}>
+                                checking out what others built?
+                            </p>
+                            <Link to="/projects" className="sidebar-btn btn-primary-action" style={{ textAlign: 'center', textDecoration: 'none' }}>
+                                View Projects 🚀
+                            </Link>
+                            <Link to="/submit-idea" className="sidebar-btn btn-outline-action" style={{ marginTop: '0.5rem', textAlign: 'center', textDecoration: 'none' }}>
+                                Submit Idea 💡
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -60,7 +60,7 @@ const Team = () => {
             image: 'https://res.cloudinary.com/startup-grind/image/upload/c_fill,w_250,h_250,g_center/c_fill,dpr_2.0,f_auto,g_center,q_auto:good/v1/gcs/platform-data-goog/avatars/abhijeet_rogye_DhOJ3Wv.jpg',
             linkedin: 'https://www.linkedin.com/in/abhijeetrogye/'
         },
-   {
+        {
             name: 'Sumedh Patil',
             role: 'Technical Head',
             image: 'https://res.cloudinary.com/startup-grind/image/upload/c_fill,w_250,h_250,g_center/c_fill,dpr_2.0,f_auto,g_center,q_auto:good/v1/gcs/platform-data-goog/avatars/sumedh_patil_CV1e5fD.png',
@@ -72,7 +72,9 @@ const Team = () => {
             name: 'Rupesh Nandale',
             role: 'Events & Operations Head',
             image: 'https://res.cloudinary.com/startup-grind/image/upload/c_fill,w_250,h_250,g_center/c_fill,dpr_2.0,f_auto,g_center,q_auto:good/v1/gcs/platform-data-goog/avatars/rupesh_nandale_eQDyo0t.jpeg',
-            linkedin: 'https://www.linkedin.com/in/rupesh-nandale-287678277/'
+            linkedin: 'https://www.linkedin.com/in/rupesh-nandale-287678277/',
+            github: 'https://github.com/rupesh108-iebe',
+            twitter: 'https://x.com/Anvayu108'
         },
         {
             name: 'Sahas Santosh Bochare',
@@ -199,7 +201,9 @@ const Team = () => {
             name: 'Rupesh Nandale',
             role: 'Events & Operations Head',
             image: 'https://res.cloudinary.com/startup-grind/image/upload/c_fill,w_250,h_250,g_center/c_fill,dpr_2.0,f_auto,g_center,q_auto:good/v1/gcs/platform-data-goog/avatars/rupesh_nandale_eQDyo0t.jpeg',
-            linkedin: 'https://www.linkedin.com/in/rupesh-nandale-287678277/'
+            linkedin: 'https://www.linkedin.com/in/rupesh-nandale-287678277/',
+            github: 'https://github.com/rupesh108-iebe',
+            twitter: 'https://x.com/Anvayu108'
         },
         {
             name: 'Darshan Repale',
@@ -233,7 +237,14 @@ const Team = () => {
         { name: 'Rajendra Singh Rajput', role: 'Volunteer' },
         { name: 'Tejas D. Bhavthankar', role: 'Volunteer' },
         { name: 'Jowin Mascarenhas', role: 'Volunteer' },
-        { name: 'Siddhant Prasad Koli', role: 'Volunteer' },
+        {
+            name: 'Siddhant Koli',
+            role: 'Event Manager',
+            image: 'https://i.ibb.co/vC45k4Rv/Whats-App-Image-2025-12-07-at-19-41-31-beac7d3a.jpg',
+            linkedin: 'https://www.linkedin.com/in/siddhant-koli-385502374/',
+            github: 'https://github.com/SiddhantKoli',
+            instagram: 'http://instagram.com/sidye1/'
+        },
         {
             name: 'Smital Raut',
             role: 'Volunteer',
@@ -559,13 +570,17 @@ const Team = () => {
         </Tilt>
     );
 
+    const totalMembers = facultyAdvisor.length + coreTeam.length + departmentLeads.length + techTeam.length + eventsTeam.length + communityTeam.length + mediaTeam.length + contentTeam.length;
+
     const renderTeamSection = (title, teamArray, animation) => {
         const leads = teamArray.filter(m => isLead(m.role));
         const members = teamArray.filter(m => !isLead(m.role));
 
         return (
             <React.Fragment key={title}>
-                <h2 className="section-title-premium team-title" data-aos={animation} style={{ marginTop: '3rem' }}>{title}</h2>
+                <h2 className="section-title-premium team-title" data-aos={animation} style={{ marginTop: '3rem' }}>
+                    {title} <span style={{ fontSize: '0.6em', opacity: 0.7, verticalAlign: 'middle', marginLeft: '10px', background: 'rgba(66, 133, 244, 0.1)', padding: '2px 12px', borderRadius: '12px', color: '#4285F4' }}>{teamArray.length}</span>
+                </h2>
 
                 {leads.length > 0 && (
                     <ul className="organizers-grid team-grid" style={{ justifyContent: 'center', marginBottom: '2rem' }}>
@@ -591,21 +606,37 @@ const Team = () => {
                 <div className="floating-blob blob-yellow"></div>
                 <div className="floating-blob blob-green"></div>
 
-                <h1 className="section-title-premium" data-aos="fade-up">Visionary Leaders</h1>
+                <div style={{ textAlign: 'center', marginBottom: '4rem' }} data-aos="fade-down">
+                    <h1 className="section-title-premium" style={{ marginBottom: '1rem', fontSize: '3.5rem' }}>Meet the Squad</h1>
+                    <p style={{ fontSize: '1.2rem', color: '#5f6368', maxWidth: '600px', margin: '0 auto' }}>
+                        A community of <strong style={{ color: '#4285F4' }}>{totalMembers}+</strong> passionate developers, designers, and innovators building the future together.
+                    </p>
+                </div>
+
+                <h1 className="section-title-premium" data-aos="fade-up" style={{ fontSize: '2.5rem' }}>
+                    Visionary Leaders
+                    <span style={{ fontSize: '0.5em', opacity: 0.7, verticalAlign: 'middle', marginLeft: '10px', background: 'rgba(52, 168, 83, 0.1)', padding: '2px 10px', borderRadius: '12px', color: '#34A853' }}>{facultyAdvisor.length}</span>
+                </h1>
                 <ul className="organizers-grid faculty-grid">
                     {facultyAdvisor.map(renderOrganizerCard)}
                 </ul>
 
                 <div className="team-divider-premium"></div>
 
-                <h1 className="section-title-premium" data-aos="fade-up">Core Team</h1>
+                <h1 className="section-title-premium" data-aos="fade-up" style={{ fontSize: '2.5rem' }}>
+                    Core Team
+                    <span style={{ fontSize: '0.5em', opacity: 0.7, verticalAlign: 'middle', marginLeft: '10px', background: 'rgba(234, 67, 53, 0.1)', padding: '2px 10px', borderRadius: '12px', color: '#EA4335' }}>{coreTeam.length}</span>
+                </h1>
                 <ul className="organizers-grid">
                     {coreTeam.map(renderOrganizerCard)}
                 </ul>
 
                 <div className="team-divider-premium"></div>
 
-                <h1 className="section-title-premium" data-aos="fade-up">Department Leads</h1>
+                <h1 className="section-title-premium" data-aos="fade-up" style={{ fontSize: '2.5rem' }}>
+                    Department Leads
+                    <span style={{ fontSize: '0.5em', opacity: 0.7, verticalAlign: 'middle', marginLeft: '10px', background: 'rgba(251, 188, 4, 0.1)', padding: '2px 10px', borderRadius: '12px', color: '#FBBC04' }}>{departmentLeads.length}</span>
+                </h1>
                 <ul className="organizers-grid department-leads-grid" style={{ justifyContent: 'center' }}>
                     {departmentLeads.map(renderOrganizerCard)}
                 </ul>

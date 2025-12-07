@@ -19,39 +19,21 @@ const Projects = ({ preview = false }) => {
     const projects = [
         {
             id: 1,
-            title: 'SJCEM Campus Companion',
-            description: 'An all-in-one mobile app for students to track attendance, view schedules, and get campus news updates in real-time.',
-            image: 'https://images.unsplash.com/photo-1555421689-491a97ff2040?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80',
-            tags: ['Flutter', 'Firebase', 'Google Maps'],
-            github: '#',
-            demo: '#'
+            title: 'Style Share',
+            description: 'A platform to create, explore, and share Tailwind CSS components. Built with TypeScript, Express, React, Recoil, Prisma, MongoDB, and Tailwind CSS.',
+            image: 'https://images.unsplash.com/photo-1587620962725-abab7fe55159?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80',
+            tags: ['React', 'TypeScript', 'Tailwind CSS', 'Prisma', 'MongoDB'],
+            github: 'http://github.com/VaibhavArora314/StyleShare',
+            demo: 'https://style-share.vercel.app/app/'
         },
         {
             id: 2,
-            title: 'AI Resume Screener',
-            description: 'A tool built during the GenAI Study Jam that uses Gemini API to analyze resumes and suggest improvements based on job descriptions.',
-            image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&auto=format&fit=crop&w=1632&q=80',
-            tags: ['Python', 'Gemini API', 'Streamlit'],
-            github: '#',
-            demo: '#'
-        },
-        {
-            id: 3,
-            title: 'EcoTrack - Waste Management',
-            description: 'IoT-based smart dustbin system that rewards students for proper waste segregation using QR codes.',
-            image: 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80',
-            tags: ['IoT', 'Arduino', 'React Native'],
-            github: '#',
-            demo: '#'
-        },
-        {
-            id: 4,
-            title: 'GDG Event Manager',
-            description: 'The official platform (this website!) for managing events, team members, and registrations for our chapter.',
-            image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80',
-            tags: ['React', 'Vite', 'SheetDB'],
-            github: '#',
-            demo: '#'
+            title: 'Mumbai University Paper Hub',
+            description: 'A centralized platform for Mumbai University resources including question papers, syllabus, and solutions. Features a smart chatbot for efficient retrieval.',
+            image: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1473&q=80',
+            tags: ['PHP', 'Java', 'Web Dev', 'Chatbot'],
+            github: 'https://github.com/dhirajchaudhari20/-Mumbai-University-Paper-Hub',
+            demo: 'https://mupaperhub.netlify.app/index.html'
         }
     ];
 
