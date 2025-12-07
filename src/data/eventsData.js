@@ -109,7 +109,7 @@ export const upcomingEvents = [
             { question: 'Can I choose any problem statement or theme?', answer: 'Yes! The theme is Open Innovation, so you can build solutions for any problem you identify.' },
             { question: 'Is participation free?', answer: 'Yes, participation is completely free.' },
             { question: 'What is the team size?', answer: 'Teams can consist of 2 to 4 members.' },
-            { question: 'Will food be provided?', answer: 'Yes, snacks and refreshments will be provided during the offline sessions.' },
+            { question: 'Will food be provided?', answer: 'No, food will not be provided for this event. However, we may have special arrangements for the Top 10 shortlisted teams.' },
             { question: 'Can I participate remotely?', answer: 'The initial submission is online, but the final round will be held offline at the campus.' }
         ]
     }

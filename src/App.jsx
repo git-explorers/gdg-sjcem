@@ -38,6 +38,7 @@ const Home = () => (
     <Hero />
     <About />
     <Events />
+    <Gallery preview={true} />
     <Projects preview={true} />
     <Leaderboard preview={true} />
     <Organizers />

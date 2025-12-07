@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react';
 import './Gallery.css';
 
-const Gallery = () => {
+const Gallery = ({ preview = false }) => {
     useEffect(() => {
-        window.scrollTo(0, 0);
-    }, []);
+        if (!preview) {
+            window.scrollTo(0, 0);
+        }
+    }, [preview]);
 
     const images = [
         "https://i.ibb.co/xtMWG5bB/IMG-0354.avif",
@@ -20,14 +22,18 @@ const Gallery = () => {
         "/images/event-5.webp"
     ];
 
+    const displayImages = preview ? images.slice(0, 8) : images;
+
     return (
-        <section className="section gallery-section">
+        <section className={`section gallery-section ${preview ? 'gallery-preview' : ''}`} id={preview ? 'gallery-preview' : 'gallery'}>
             <div className="container">
-                <h1 className="section-title">Event Gallery</h1>
-                <p className="section-subtitle">A glimpse into our vibrant community events and workshops.</p>
+                <h1 className="section-title" data-aos="fade-down">{preview ? 'Moments that Matter' : 'Event Gallery'}</h1>
+                <p className="section-subtitle" data-aos="fade-up" data-aos-delay="100">
+                    {preview ? 'A snapshot of our vibrant community activities.' : 'A glimpse into our vibrant community events and workshops.'}
+                </p>
 
                 <div className="gallery-grid">
-                    {images.map((src, index) => (
+                    {displayImages.map((src, index) => (
                         <div key={index} className="gallery-item" data-aos="fade-up" data-aos-delay={index * 50}>
                             <img src={src} alt={`Gallery Event ${index + 1}`} loading="lazy" decoding="async" />
                             <div className="gallery-overlay">
@@ -36,6 +42,14 @@ const Gallery = () => {
                         </div>
                     ))}
                 </div>
+
+                {preview && (
+                    <div className="view-all-container" data-aos="fade-up" style={{ textAlign: 'center', marginTop: '3rem' }}>
+                        <a href="/gallery" className="btn btn-primary" style={{ textDecoration: 'none' }}>
+                            View Full Gallery 📸
+                        </a>
+                    </div>
+                )}
             </div>
         </section>
     );
