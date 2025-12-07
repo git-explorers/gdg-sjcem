@@ -17,6 +17,10 @@ const EventDetails = () => {
     // Mentor/Judge Modal State
     const [selectedProfile, setSelectedProfile] = useState(null);
 
+    // RSVP Count State
+    const event = [...upcomingEvents, ...pastEvents].find(e => e.id.toString() === id);
+    const [rsvpCount, setRsvpCount] = useState(event ? event.registrations : 0);
+
     // Lock body scroll when modal is open
     useEffect(() => {
         if (selectedProfile) {
@@ -26,8 +30,57 @@ const EventDetails = () => {
         }
     }, [selectedProfile]);
 
-    // Find event in either list - Moved up for access in hooks
-    const event = [...upcomingEvents, ...pastEvents].find(e => e.id.toString() === id);
+    // Fetch Real-time RSVP Count for TechSprint Hackathon (ID: 1)
+    useEffect(() => {
+        if (event && event.id === 1) {
+            const fetchRsvpCount = async () => {
+                const targetUrl = 'https://gdg.community.dev/events/details/google-gdg-on-campus-st-john-college-of-engineering-and-management-autonomous-palghar-india-presents-techsprint-hackathon-2025-kick-off-session-gdg-on-campus-sjcem/';
+
+                // Try CodeTabs first (raw text)
+                try {
+                    const proxyUrl = `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(targetUrl)}`;
+                    const response = await fetch(proxyUrl);
+                    if (!response.ok) throw new Error('CodeTabs failed');
+                    const text = await response.text();
+
+                    // Regex to find "X RSVP'd" or similar
+                    // The site typically renders: "6 RSVP'd" or "<span>6</span> RSVP'd"
+                    // We look for a number followed closely by "RSVP"
+                    const match = text.match(/(?:>|\s|^)(\d{1,4})(?:<|\s|&nbsp;)*RSVP/i);
+                    if (match && match[1]) {
+                        const count = parseInt(match[1], 10);
+                        if (!isNaN(count) && count > 0) {
+                            setRsvpCount(count);
+                            return; // Success
+                        }
+                    }
+                } catch (e) {
+                    console.warn('CodeTabs proxy failed:', e);
+                }
+
+                // Fallback to AllOrigins (raw)
+                try {
+                    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`;
+                    const response = await fetch(proxyUrl);
+                    if (!response.ok) throw new Error('AllOrigins failed');
+                    const text = await response.text();
+
+                    const match = text.match(/(?:>|\s|^)(\d{1,4})(?:<|\s|&nbsp;)*RSVP/i);
+                    if (match && match[1]) {
+                        const count = parseInt(match[1], 10);
+                        if (!isNaN(count) && count > 0) {
+                            setRsvpCount(count);
+                        }
+                    }
+                } catch (e) {
+                    console.error('All RSVP fetch attempts failed:', e);
+                    // Optionally set a default or previous count if all attempts fail
+                }
+            };
+
+            fetchRsvpCount();
+        }
+    }, [event]);
 
     const agendaRef = useRef(null);
     const progressLineRef = useRef(null);
@@ -259,7 +312,7 @@ const EventDetails = () => {
                             <span className="meta-icon-item">📅 {event.date}</span>
                             <span className="meta-icon-item">📍 {event.location || 'SJCEM Campus'}</span>
                             {event.registrations && (
-                                <span className="meta-icon-item">👥 {displayCount}+ Registered</span>
+                                <span className="meta-icon-item">👥 {rsvpCount}+ Registered</span>
                             )}
                             {event.teamSize && (
                                 <span className="meta-icon-item">🧑‍🤝‍🧑 Team: {event.teamSize}</span>

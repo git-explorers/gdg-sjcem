@@ -21,7 +21,7 @@ export const upcomingEvents = [
         `,
         image: 'https://i.ibb.co/bjc6f31T/Generated-Image-December-04-2025-8-46-PM.jpg',
         showTimer: true,
-        registrations: 3,
+        registrations: 6,
         teamSize: '2-4 Members',
         lastDate: 'Sat 20 Dec 2025',
         location: 'SJCEM Campus, Palghar',
