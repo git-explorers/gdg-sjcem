@@ -488,6 +488,8 @@ const Team = () => {
         { name: 'Nayi Prem Babubhai', role: 'Volunteer' }
     ];
 
+    const judges = [];
+
     const getInitials = (name) => {
         return name.split(' ').map(n => n[0]).join('').substring(0, 2);
     };
