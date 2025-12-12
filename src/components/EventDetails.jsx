@@ -8,8 +8,141 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import './EventDetails.css';
 import FeedbackModal from './FeedbackModal';
+import BadgeGenerator from './BadgeGenerator';
 
 import AOS from 'aos';
+
+// Helper to extract speaker info
+const parseAgendaItem = (item) => {
+    // If structured speakers exist, use them
+    if (item.speakers && item.speakers.length > 0) {
+        return {
+            ...item,
+            speakers: item.speakers,
+            cleanDescription: item.description
+        };
+    }
+
+    // Fallback: Regex Parsing
+    let speakers = [];
+    let desc = item.description;
+    const speakerMatch = desc.match(/Speaker(?:s)?:?\s*(.*)/i);
+    if (speakerMatch) {
+        // Create simple speaker objects from string
+        const names = speakerMatch[1].split(/&|,/).map(s => s.trim());
+        speakers = names.map(name => ({ name, role: 'Speaker', image: null }));
+
+        desc = desc.replace(/Speaker(?:s)?:?\s*.*$/i, '').trim();
+        if (desc.endsWith(',') || desc.endsWith('.')) {
+            desc = desc.slice(0, -1).trim();
+        }
+    }
+    return { ...item, speakers, cleanDescription: desc };
+};
+
+const AgendaCard = ({ item }) => {
+    const [isExpanded, setIsExpanded] = useState(false);
+    const { time, title, speakers, cleanDescription } = parseAgendaItem(item);
+
+    // Live Badge Logic
+    const isLive = () => {
+        // Parse time string "11:15 AM – 11:45 AM"
+        try {
+            const [startStr, endStr] = time.split('–').map(s => s.trim());
+            const now = new Date();
+
+            // For demo/testing: You might want to uncomment this to force a specific "now"
+            // const now = new Date(); now.setHours(11, 30, 0); 
+
+            const parseTime = (timeStr) => {
+                const [time, period] = timeStr.split(' ');
+                let [hours, minutes] = time.split(':').map(Number);
+                if (period === 'PM' && hours !== 12) hours += 12;
+                if (period === 'AM' && hours === 12) hours = 0;
+
+                const date = new Date();
+                date.setHours(hours, minutes, 0);
+                return date;
+            };
+
+            const startTime = parseTime(startStr);
+            const endTime = parseTime(endStr);
+
+            return now >= startTime && now <= endTime;
+        } catch (e) {
+            return false;
+        }
+    };
+
+    const liveStatus = isLive();
+
+    return (
+        <div className={`google-agenda-card ${isExpanded ? 'expanded' : ''} ${liveStatus ? 'live-item' : ''}`}>
+            <div className="google-agenda-header" onClick={() => setIsExpanded(!isExpanded)}>
+                <div className="google-agenda-main-info">
+                    <div className="agenda-title-row">
+                        <h4 className="google-agenda-title">{title}</h4>
+                        {liveStatus && (
+                            <span className="live-badge">
+                                <span className="live-dot"></span> Live
+                            </span>
+                        )}
+                    </div>
+                    {/* Speaker Preview (Names only) in Header */}
+                    {speakers && speakers.length > 0 && (
+                        <div className="google-agenda-speaker-preview">
+                            {speakers.map(s => s.name).join(' & ')}
+                        </div>
+                    )}
+                </div>
+                <div className="google-agenda-toggle">
+                    <i className={`google-material-icons icon ${isExpanded ? 'rotated' : ''}`}>keyboard_arrow_down</i>
+                </div>
+            </div>
+
+            <div className="google-agenda-collapsed-info">
+                <span className="google-agenda-time">{time}</span>
+            </div>
+
+            <div className={`google-agenda-body ${isExpanded ? 'show' : ''}`}>
+                <div className="google-agenda-desc">
+                    <p>{cleanDescription}</p>
+
+                    <div className="google-agenda-meta-detail">
+                        <span className="meta-badge-time">⏰ {time}</span>
+                    </div>
+
+                    {/* Rich Speaker Details */}
+                    {speakers && speakers.length > 0 && (
+                        <div className="google-agenda-speakers-section">
+                            {speakers.map((speaker, idx) => (
+                                <div key={idx} className="google-speaker-card">
+                                    <div className="google-speaker-avatar">
+                                        {speaker.image ? (
+                                            <img src={speaker.image} alt={speaker.name} />
+                                        ) : (
+                                            <div className="google-speaker-initial">{speaker.name.charAt(0)}</div>
+                                        )}
+                                    </div>
+                                    <div className="google-speaker-info">
+                                        <div className="google-speaker-name">{speaker.name}</div>
+                                        <div className="google-speaker-role">{speaker.role}</div>
+                                        <div className="google-speaker-company">Google Developer Groups on Campus SJCEM</div>
+                                    </div>
+                                    {speaker.linkedin && speaker.linkedin !== '#' && (
+                                        <a href={speaker.linkedin} target="_blank" rel="noopener noreferrer" className="google-speaker-social">
+                                            <i className="fab fa-linkedin"></i>
+                                        </a>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
+};
 
 const EventDetails = () => {
     const { id } = useParams();
@@ -82,51 +215,10 @@ const EventDetails = () => {
         }
     }, [event]);
 
-    const agendaRef = useRef(null);
-    const progressLineRef = useRef(null);
-    const timelineRef = useRef(null);
-    const timelineProgressRef = useRef(null);
-
-    // Function to handle timeline animation (reused for both Agenda and Timeline)
-    const handleTimelineAnimation = (containerRef, lineRef) => {
-        if (!containerRef.current || !lineRef.current) return;
-
-        const container = containerRef.current;
-        const progressLine = lineRef.current;
-        const items = container.querySelectorAll('.agenda-item');
-        const windowHeight = window.innerHeight;
-
-        let maxActiveTop = 0;
-
-        items.forEach((item) => {
-            const itemRect = item.getBoundingClientRect();
-            if (itemRect.top < windowHeight * 0.75) {
-                item.classList.add('active');
-                const dotOffset = 36;
-                maxActiveTop = (item.offsetTop + dotOffset);
-            } else {
-                item.classList.remove('active');
-            }
-        });
-
-        if (maxActiveTop > 0) {
-            progressLine.style.height = `${maxActiveTop}px`;
-        } else {
-            progressLine.style.height = '0px';
-        }
-    };
-
     // Scroll Animation Effect
     useEffect(() => {
-        const handleScroll = () => {
-            handleTimelineAnimation(agendaRef, progressLineRef);
-            handleTimelineAnimation(timelineRef, timelineProgressRef);
-        };
-
-        window.addEventListener('scroll', handleScroll);
-        setTimeout(handleScroll, 100);
-
-        return () => window.removeEventListener('scroll', handleScroll);
+        // Only keep window scroll listener if needed for other things (like floating bar)
+        // logic for timeline animation removed as we switched to cards
     }, [event, id]);
 
     // Scroll to top and refresh animations on load
@@ -136,6 +228,8 @@ const EventDetails = () => {
             AOS.refresh();
         }, 500); // Small delay to ensure DOM is ready
     }, []);
+
+
 
     // Event is already defined above
 
@@ -396,6 +490,25 @@ const EventDetails = () => {
                             Share Feedback ⭐
                         </button>
 
+                        <button
+                            className="sidebar-btn btn-outline-action"
+                            style={{ marginTop: '0.5rem' }}
+                            onClick={() => {
+                                if (navigator.share) {
+                                    navigator.share({
+                                        title: event.title,
+                                        text: `Check out ${event.title} at GDG on Campus SJCEM!`,
+                                        url: window.location.href,
+                                    }).catch(console.error);
+                                } else {
+                                    navigator.clipboard.writeText(window.location.href);
+                                    alert("Link copied to clipboard!");
+                                }
+                            }}
+                        >
+                            Share Event 🔗
+                        </button>
+
                         {event.materialsLink && (
                             <a
                                 href={event.materialsLink}
@@ -446,17 +559,9 @@ const EventDetails = () => {
                     <div className="event-agenda full-width-block">
                         <div className="content-wrapper">
                             <h3 className="agenda-title">Event Agenda</h3>
-                            <div className="agenda-timeline" ref={agendaRef}>
-                                <div className="agenda-progress-line" ref={progressLineRef}></div>
+                            <div className="agenda-list-container">
                                 {event.agenda.map((item, index) => (
-                                    <div
-                                        key={index}
-                                        className="agenda-item"
-                                    >
-                                        <div className="agenda-time">{item.time}</div>
-                                        <div className="agenda-event-title">{item.title}</div>
-                                        <div className="agenda-desc">{item.description}</div>
-                                    </div>
+                                    <AgendaCard key={index} item={item} />
                                 ))}
                             </div>
                         </div>
@@ -539,6 +644,13 @@ const EventDetails = () => {
                         </div>
                     </div>
                 )}
+
+                {/* Virtual Badge Generator Section */}
+                <div className="full-width-block">
+                    <div className="content-wrapper">
+                        <BadgeGenerator eventName={event.title} />
+                    </div>
+                </div>
 
                 {/* Prizes Section */}
                 {event.prizes && (
