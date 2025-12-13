@@ -384,6 +384,10 @@ const GoogleCodelab = () => {
                             <Link to="/codelabs" className="btn-gc-primary">Mark as completed</Link>
                         )}
                     </div>
+
+                    <div style={{ marginTop: '60px', borderTop: '1px solid #dadce0', paddingTop: '20px', textAlign: 'center', color: '#5f6368', fontSize: '13px', paddingBottom: '20px' }}>
+                        © 2025 Designed and Developed by GDG On Campus SJCEM
+                    </div>
                 </main>
 
                 {/* Right Sidebar - Live Session */}

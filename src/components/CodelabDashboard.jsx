@@ -167,6 +167,11 @@ const CodelabDashboard = () => {
                         <span style={{ fontWeight: '500', color: '#3c4043' }}>Contact us at: </span>
                         <a href="mailto:gdg@sjcem.edu.in" style={{ color: '#1a73e8', textDecoration: 'none' }}>gdg@sjcem.edu.in</a>
                     </p>
+                    <div style={{ marginTop: '40px', borderTop: '1px solid #dadce0', paddingTop: '20px' }}>
+                        <p style={{ color: '#5f6368', fontSize: '13px' }}>
+                            © 2025 Designed and Developed by GDG On Campus SJCEM
+                        </p>
+                    </div>
                 </div>
             </main>
         </div>

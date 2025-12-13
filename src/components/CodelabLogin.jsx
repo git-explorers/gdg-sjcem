@@ -70,6 +70,9 @@ const CodelabLogin = () => {
                     <span style={styles.btnText}>Sign in with Google</span>
                 </button>
             </div>
+            <footer style={styles.footer}>
+                © 2025 Designed and Developed by GDG On Campus SJCEM
+            </footer>
         </div>
     );
 };
@@ -148,6 +151,12 @@ const styles = {
         flexGrow: 1,
         textAlign: 'center',
         paddingRight: '12px' // Balance the icon padding
+    },
+    footer: {
+        position: 'absolute',
+        bottom: '20px',
+        color: '#5f6368',
+        fontSize: '12px'
     }
 };
 

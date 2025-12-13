@@ -338,6 +338,11 @@ const LiveSessionPanel = ({ codelabId, sessionId }) => {
                 </div>
             ) : (
                 <div className="chat-view animate-fade-in">
+                    {error && (
+                        <div style={{ padding: '8px', backgroundColor: '#fce8e6', color: '#c5221f', fontSize: '12px', textAlign: 'center' }}>
+                            {error}
+                        </div>
+                    )}
                     <div className="chat-messages">
                         {messages.length === 0 && (
                             <div className="empty-chat">
