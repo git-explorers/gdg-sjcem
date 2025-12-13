@@ -429,26 +429,45 @@ const LiveSessionPanel = ({ codelabId, sessionId }) => {
                                 <button type="button" onClick={() => setAttachedImage(null)}>×</button>
                             </div>
                         )}
-                        <div className="input-row">
-                            <label className="image-upload-btn">
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    hidden
-                                    onChange={handleImageUpload}
-                                    disabled={isUploading}
+                        <div className="chat-input-form">
+                            <div className="chat-input-wrapper">
+                                <textarea
+                                    id="chat-message-input"
+                                    name="message"
+                                    className="chat-input"
+                                    placeholder="Type a message..."
+                                    value={newMessage}
+                                    onChange={(e) => setNewMessage(e.target.value)}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter' && !e.shiftKey) {
+                                            e.preventDefault();
+                                            handleSendMessage(e);
+                                        }
+                                    }}
+                                    rows={1}
+                                    disabled={isSending}
                                 />
-                                {isUploading ? '...' : '📷'}
-                            </label>
-                            <input
-                                type="text"
-                                placeholder="Type a message..."
-                                value={newMessage}
-                                onChange={(e) => setNewMessage(e.target.value)}
-                            />
-                            <button type="submit" disabled={(!newMessage.trim() && !attachedImage) || isUploading}>
-                                ➤
-                            </button>
+                            </div>
+                            <div className="chat-actions">
+                                <label className="icon-btn" title="Upload image">
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        hidden
+                                        onChange={handleImageUpload}
+                                        disabled={isUploading}
+                                    />
+                                    {isUploading ? '⏳' : '📎'}
+                                </label>
+                                <button
+                                    type="submit"
+                                    className="icon-btn send-btn"
+                                    disabled={(!newMessage.trim() && !attachedImage) || isSending}
+                                    title="Send message"
+                                >
+                                    ➤
+                                </button>
+                            </div>
                         </div>
                     </form>
                 </div>
