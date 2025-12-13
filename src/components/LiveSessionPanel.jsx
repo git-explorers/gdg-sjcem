@@ -3,6 +3,10 @@ import { db } from '../firebase';
 import { collection, doc, setDoc, addDoc, deleteDoc, onSnapshot, query, orderBy, limit, writeBatch, getDocs, serverTimestamp } from 'firebase/firestore';
 import { useAuth } from '../context/AuthContext';
 import { AnimatePresence, motion } from 'framer-motion';
+import io from 'socket.io-client'; // Import Socket.io
+
+// ☁️ Production Backend URL (Google Cloud Run)
+const BACKEND_URL = import.meta.env.VITE_CHAT_SERVER_URL || "https://gdg-chat-backend-1042751012948.us-central1.run.app";
 
 const LiveSessionPanel = ({ codelabId, sessionId }) => {
     const { currentUser } = useAuth();
@@ -12,7 +16,7 @@ const LiveSessionPanel = ({ codelabId, sessionId }) => {
     const [connectionStatus, setConnectionStatus] = useState('connecting'); // connecting, connected, error
 
     // Chat State
-    const [activeTab, setActiveTab] = useState('chat'); // 'chat' or 'stats'
+    const [activeTab, setActiveTab] = useState('chat');
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
     const [attachedImage, setAttachedImage] = useState(null);
@@ -21,12 +25,14 @@ const LiveSessionPanel = ({ codelabId, sessionId }) => {
     const [error, setError] = useState('');
     const chatEndRef = useRef(null);
 
+    // Socket Ref
+    const socketRef = useRef(null);
+
     useEffect(() => {
         if (!codelabId) return;
 
-        setConnectionStatus('connecting');
-
-        // Listen to live votes
+        // --- 1. Firestore Listener for VOTES (Stats) ---
+        // Keeping this on Firestore for now as it's less bandwidth intensive than chat stream
         const qVotes = query(collection(db, "codelabs", codelabId, "live_votes"), orderBy("timestamp", "desc"));
         const unsubVotes = onSnapshot(qVotes, (snapshot) => {
             const newVotes = [];
@@ -39,7 +45,6 @@ const LiveSessionPanel = ({ codelabId, sessionId }) => {
                 if (data.status && newCounts[data.status] !== undefined) {
                     newCounts[data.status]++;
                 }
-                // Check against sessionId instead of uid
                 if (doc.id === sessionId) {
                     myCurrentVote = data.status;
                 }
@@ -48,28 +53,45 @@ const LiveSessionPanel = ({ codelabId, sessionId }) => {
             setVotes(newVotes);
             setCounts(newCounts);
             setMyVote(myCurrentVote);
-            setConnectionStatus('connected');
         }, (err) => {
             console.error("Votes Listener Error:", err);
-            setError(`Connection Error: ${err.message}`);
-            setConnectionStatus('error');
+            // Don't set global error here to avoid blocking chat if only stats fail
         });
 
-        // Listen to chat messages (Limit 50 latest)
-        // Use 'desc' to get newest first, then reverse for display
-        const qChat = query(collection(db, "codelabs", codelabId, "chat_messages"), orderBy("timestamp", "desc"), limit(50));
-        const unsubChat = onSnapshot(qChat, (snapshot) => {
-            const msgs = [];
-            snapshot.forEach(doc => msgs.push({ id: doc.id, ...doc.data() }));
-            // Reverse so oldest are at top, newest at bottom
-            setMessages(msgs.reverse());
-            // Scroll to bottom on new message
+        // --- 2. Socket.io Connection for CHAT (The Fix) ---
+        setConnectionStatus('connecting'); // Indicate chat connection attempt
+        // Connect to the Google Cloud Backend
+        socketRef.current = io(BACKEND_URL);
+
+        socketRef.current.on('connect', () => {
+            console.log("✅ Custom Backend Connected");
+            setConnectionStatus('connected');
+            setError(''); // Clear errors
+
+            // Join the specific codelab room
+            socketRef.current.emit('join_room', codelabId);
+        });
+
+        socketRef.current.on('connect_error', (err) => {
+            console.error("Socket Connection Error:", err);
+            setConnectionStatus('error');
+            setError(`Chat Server Disconnected. (backend offline?)`);
+        });
+
+        socketRef.current.on('load_history', (history) => {
+            setMessages(history);
             setTimeout(() => chatEndRef.current?.scrollIntoView({ behavior: 'smooth' }), 100);
         });
 
+        socketRef.current.on('receive_message', (message) => {
+            setMessages((prev) => [...prev, message]);
+            setTimeout(() => chatEndRef.current?.scrollIntoView({ behavior: 'smooth' }), 100);
+        });
+
+        // Cleanup
         return () => {
             unsubVotes();
-            unsubChat();
+            if (socketRef.current) socketRef.current.disconnect();
         };
     }, [codelabId, currentUser, sessionId]);
 
@@ -155,22 +177,28 @@ const LiveSessionPanel = ({ codelabId, sessionId }) => {
         e.preventDefault();
         if ((!newMessage.trim() && !attachedImage) || !currentUser) return;
 
+        setIsSending(true);
+        setError('');
+
         const messageData = {
+            codelabId: codelabId, // Room ID
             text: newMessage,
             image: attachedImage,
             uid: currentUser.uid,
             displayName: currentUser.displayName,
             photoURL: currentUser.photoURL,
-            timestamp: new Date()
+            // Timestamp added by server
         };
 
-        setNewMessage('');
-        setAttachedImage(null);
-
-        try {
-            await addDoc(collection(db, "codelabs", codelabId, "chat_messages"), messageData);
-        } catch (error) {
-            console.error("Error sending message:", error);
+        // Emit to Backend
+        if (socketRef.current && socketRef.current.connected) {
+            socketRef.current.emit('send_message', messageData);
+            setNewMessage('');
+            setAttachedImage(null);
+            setIsSending(false);
+        } else {
+            setError("Cannot send: Backend disconnected.");
+            setIsSending(false);
         }
     };
 
@@ -355,7 +383,13 @@ const LiveSessionPanel = ({ codelabId, sessionId }) => {
                     <div className="chat-messages">
                         {messages.length === 0 && (
                             <div className="empty-chat">
-                                <p>No messages yet. Start the conversation!</p>
+                                <p>👋 <strong>You are the first one here!</strong></p>
+                                <p style={{ fontSize: '0.9em', marginTop: '8px' }}>
+                                    To test the real-time chat:<br />
+                                    1. 📄 Open this page in a <strong>New Incognito Window</strong>.<br />
+                                    2. 💬 Send a message from there.<br />
+                                    3. ✨ See it appear here instantly!
+                                </p>
                             </div>
                         )}
                         {messages.map((msg) => (
