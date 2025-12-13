@@ -58,6 +58,7 @@ const LiveSessionPanel = ({ codelabId, sessionId }) => {
             // Don't set global error here to avoid blocking chat if only stats fail
         });
 
+
         // --- 2. Socket.io Connection for CHAT (The Fix) ---
         setConnectionStatus('connecting'); // Indicate chat connection attempt
         // Connect to the Google Cloud Backend
@@ -70,6 +71,7 @@ const LiveSessionPanel = ({ codelabId, sessionId }) => {
 
             // Join the specific codelab room
             socketRef.current.emit('join_room', codelabId);
+            console.log(`📥 Joined room: ${codelabId}`);
         });
 
         socketRef.current.on('connect_error', (err) => {
@@ -79,14 +81,21 @@ const LiveSessionPanel = ({ codelabId, sessionId }) => {
         });
 
         socketRef.current.on('load_history', (history) => {
+            console.log(`📜 Loaded ${history.length} messages from history`);
             setMessages(history);
             setTimeout(() => chatEndRef.current?.scrollIntoView({ behavior: 'smooth' }), 100);
         });
 
         socketRef.current.on('receive_message', (message) => {
-            setMessages((prev) => [...prev, message]);
+            console.log('📨 Received message:', message);
+            setMessages((prev) => {
+                const updated = [...prev, message];
+                console.log(`💬 Total messages now: ${updated.length}`);
+                return updated;
+            });
             setTimeout(() => chatEndRef.current?.scrollIntoView({ behavior: 'smooth' }), 100);
         });
+
 
         // Cleanup
         return () => {
@@ -192,11 +201,13 @@ const LiveSessionPanel = ({ codelabId, sessionId }) => {
 
         // Emit to Backend
         if (socketRef.current && socketRef.current.connected) {
+            console.log('📤 Sending message:', messageData);
             socketRef.current.emit('send_message', messageData);
             setNewMessage('');
             setAttachedImage(null);
             setIsSending(false);
         } else {
+            console.error('❌ Cannot send: Socket not connected');
             setError("Cannot send: Backend disconnected.");
             setIsSending(false);
         }
