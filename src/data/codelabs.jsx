@@ -59,13 +59,13 @@ export const codelabs = [
                                         Started as a participant, became a finalist, then a winner; now I mentor and judge hackathons, with still a long way to go. I enjoy working with Google’s AI tools, Building agents, and practical ML projects while helping others learn faster.
                                     </p>
                                     <div style={{ display: 'flex', gap: '16px', fontSize: '14px' }}>
-                                        <a href="#" style={{ display: 'flex', alignItems: 'center', gap: '4px', textDecoration: 'none', color: '#1a73e8' }}>
+                                        <a href="https://www.linkedin.com/in/prathamesh-jakkula-496a39285/" style={{ display: 'flex', alignItems: 'center', gap: '4px', textDecoration: 'none', color: '#1a73e8' }}>
                                             <i className="fab fa-linkedin"></i> LinkedIn
                                         </a>
-                                        <a href="#" style={{ display: 'flex', alignItems: 'center', gap: '4px', textDecoration: 'none', color: '#1a73e8' }}>
+                                        <a href="https://github.com/Prathamesh01110" style={{ display: 'flex', alignItems: 'center', gap: '4px', textDecoration: 'none', color: '#1a73e8' }}>
                                             <i className="fab fa-github"></i> GitHub
                                         </a>
-                                        <a href="#" style={{ display: 'flex', alignItems: 'center', gap: '4px', textDecoration: 'none', color: '#1a73e8' }}>
+                                        <a href="https://x.com/Prathamesh01_" style={{ display: 'flex', alignItems: 'center', gap: '4px', textDecoration: 'none', color: '#1a73e8' }}>
                                             <i className="fab fa-twitter"></i> Twitter/X
                                         </a>
                                     </div>
@@ -131,17 +131,31 @@ export const codelabs = [
                         <h3>Setup GCP & Gemini API Key</h3>
 
                         <h4>Step 1: Enable Billing Account</h4>
-                        <p>Claim your <a href="https://trygcp.dev/claim/adk-crash-course-1" target="_blank" rel="noopener noreferrer">Free $5 Billing Credit</a>.</p>
+                        <p>Claim your <a href="https://trygcp.dev/claim/adk-crash-course-1" target="_blank" rel="noopener noreferrer" style={{color:'blue'}}>Free $5 Billing Credit</a>.</p>
                         <p>No credit card is needed. Just sign in with your Gmail and accept the credits.</p>
                         <img src="/colab/step3_5.png" alt="Billing Setup" />
 
                         <h4>Step 2: Create GCP Project</h4>
-                        <p>Go to <a href="https://console.cloud.google.com/" target="_blank" rel="noopener noreferrer">Google Cloud Console</a> and create a new project. Ensure your new billing account is linked.</p>
+                        <p>Go to <a href="https://console.cloud.google.com/" target="_blank" rel="noopener noreferrer" style={{color:'blue'}}>Google Cloud Console</a> and create a new project. Ensure your new billing account is linked.</p>
                         <img src="/colab/step3_1.png" alt="Create Project" />
 
                         <h4>Step 3: Generate Gemini API Key</h4>
-                        <p>Navigate to <a href="https://aistudio.google.com/api-keys" target="_blank" rel="noopener noreferrer">Google AI Studio</a> and create a new API key.</p>
+                        <p>Navigate to <a href="https://aistudio.google.com/api-keys" target="_blank" rel="noopener noreferrer" style={{color:'blue'}}>Google AI Studio</a> and create a new API key.</p>
                         <img src="/colab/step3_2.png" alt="Get API Key" />
+
+                         <h3>Setup Firebase & Firestore</h3>
+
+                        <h4>Step 4: Login to Firebase & Choose the Project created in GCP</h4>
+                        <p>Go to <a href="https://console.firebase.google.com/" target="_blank" rel="noopener noreferrer" style={{color:'blue'}}>Firebase Console</a> and log in with your Google account.</p>
+
+                        <h4>Step 5: Generate Firebase Admin SDK Key</h4>
+                        <p>Enable "Firestore Database"</p>
+                        <p>Click the gear icon in the top left corner of the Firebase console and go to "Project settings".</p>
+                        <p>In the "Service accounts" tab, click "Generate new private key".</p>
+
+                        <img src="/colab/step4_1.png" alt="Get API Key" />
+                        <h4>Step 6: Download & Rename Firebase Key</h4>
+                        <p>Download the JSON key file and rename it to <code>serviceAccountKey.json</code>.</p>
 
                         <div className="gc-info-box">
                             <span className="gc-info-box-title">Important</span>
@@ -195,6 +209,11 @@ export const codelabs = [
                             <li><strong>Capacity Planning Agent:</strong> Determines fleet size needed.</li>
                             <li><strong>Data Recording Agent:</strong> Saves everything to Firestore.</li>
                         </ul>
+                        <div className="action-button-container" style={{ margin: '24px 0' }}>
+                            <a href="https://colab.research.google.com/drive/1lSESLRKRQinlv5loS7IagFkmoc5pt6_j" target="_blank" rel="noopener noreferrer" className="btn-gc-primary">
+                                Open to Colab
+                            </a>
+                        </div>
                     </div>
                 )
             },
@@ -223,6 +242,7 @@ gcloud run deploy`}</code></pre>
                         <div className="gc-info-box">
                             <span className="gc-info-box-title">Fixing Service URL</span>
                             <p>Update `src/App.jsx` in the frontend with your new Backend URL, then redeploy the frontend.</p>
+                            <p>Add your Gemini_Key & Upload serviceAccountKey.json in the root of /Agent_code </p>
                         </div>
                     </div>
                 )

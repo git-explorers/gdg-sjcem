@@ -213,6 +213,19 @@ const tabs = [
             <img src="/colab/step2_1.png" alt="ADK Execution Flow" width="60%" height="60%"/>
           </div>
           <p>The system processes inputs through a series of agents, each with specific responsibilities, creating a pipeline that transforms raw data into actionable insights.</p>
+          <h3>5 Main Functions in ADK</h3>
+          <div className='code-snippet'>
+        
+              <pre>
+               {`import google.generativeai as genai
+genai.configure(api_key="YOUR_API_KEY") # 1. API ke
+model = genai.GenerativeModel("gemini-2.5-flash") # 2. Model select
+img = genai.upload_file("car.jpg") # 3. Upload file
+res = model.generate_content(["What vehicle is this?", img]) # 4. Generate
+print(res.text) # 5. Parse output`}
+
+              </pre>
+          </div>
           <div className="image-placeholder">
             <img src="/colab/step2_2.png" alt="ADK Architecture" width="60%" height="60%"/>
           </div>
