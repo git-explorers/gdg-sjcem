@@ -1248,94 +1248,101 @@ body {
         transform: scale(1);
     }
 
-    /* --- Mobile Chat "Pop-out" (Bottom Sheet) --- */
-    @media (max-width: 900px) {
-        .live-session-wrapper {
-            display: none;
-            /* Hidden by default on mobile */
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 85vh;
-            /* Takes up most of the screen */
-            background: white;
-            z-index: 2000;
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
-            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
-            flex-direction: column;
-            animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            padding: 0;
-            /* Let children handle padding */
-            overflow: hidden;
-        }
+}
 
-        .live-session-wrapper.mobile-visible {
-            display: flex;
-            /* Show when toggled */
-        }
-
-        /* Adjust the internal panel to fit */
-        .live-session-wrapper .live-session-panel {
-            height: 100%;
-            border-radius: 0;
-            border: none;
-        }
-
-        /* Close Button */
-        .mobile-close-chat {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            width: 32px;
-            height: 32px;
-            background: rgba(0, 0, 0, 0.05);
-            border: none;
-            border-radius: 50%;
-            font-size: 24px;
-            line-height: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 2001;
-            color: #5f6368;
-        }
-
-        /* Mobile Chat Toggle Button (Floating FAB) */
-        .gc-mobile-chat-toggle {
-            display: flex;
-            /* Ensure it's visible */
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            background-color: var(--gc-blue);
-            color: white;
-            border: none;
-            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.4);
-            font-size: 24px;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        .gc-mobile-chat-toggle:active {
-            transform: scale(0.95);
-        }
+/* --- Mobile Chat "Pop-out" (Bottom Sheet) --- */
+@media (max-width: 900px) {
+    .live-session-wrapper {
+        display: none;
+        /* Hidden by default on mobile */
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 85vh;
+        /* Takes up most of the screen */
+        background: white;
+        z-index: 2000;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+        flex-direction: column;
+        animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        padding: 0;
+        /* Let children handle padding */
+        overflow: hidden;
     }
 
-    @keyframes slideUp {
-        from {
-            transform: translateY(100%);
-        }
-
-        to {
-            transform: translateY(0);
-        }
+    .live-session-wrapper.mobile-visible {
+        display: flex;
+        /* Show when toggled */
     }
+
+    /* Adjust the internal panel to fit */
+    .live-session-wrapper .gc-right-sidebar {
+        display: flex !important;
+        /* Override default mobile hidden state */
+        height: 100%;
+        width: 100%;
+        border-radius: 0;
+        border: none;
+        padding: 16px;
+        /* Add some padding back */
+    }
+
+    /* Close Button */
+    .mobile-close-chat {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        width: 32px;
+        height: 32px;
+        background: rgba(0, 0, 0, 0.05);
+        border: none;
+        border-radius: 50%;
+        font-size: 24px;
+        line-height: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 2001;
+        color: #5f6368;
+    }
+
+    /* Mobile Chat Toggle Button (Floating FAB) */
+    .gc-mobile-chat-toggle {
+        display: flex;
+        /* Ensure it's visible */
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background-color: var(--gc-blue);
+        color: white;
+        border: none;
+        box-shadow: 0 4px 12px rgba(26, 115, 232, 0.4);
+        font-size: 24px;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+
+    .gc-mobile-chat-toggle:active {
+        transform: scale(0.95);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
