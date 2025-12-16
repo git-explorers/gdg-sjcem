@@ -24,9 +24,18 @@ const Quiz = ({ data }) => {
     const [timeLeft, setTimeLeft] = useState(10); // 10 seconds per question
 
     const [activeQuestions, setActiveQuestions] = useState([]);
+    const [debugLog, setDebugLog] = useState([]); // Visual debug log for user
+
+    const addLog = (msg) => {
+        console.log(msg);
+        setDebugLog(prev => [...prev, `${new Date().toLocaleTimeString()}: ${msg}`]);
+    };
     const { title, description, questions } = data;
     // Use activeQuestions if started, otherwise fallback/placeholder
-    const currentQuestion = started && activeQuestions.length > 0 ? activeQuestions[currentQuestionIndex] : questions[0];
+    // FIX: If activeQuestions is empty after start (weird bug), default to raw questions
+    const currentQuestion = started
+        ? (activeQuestions.length > 0 ? activeQuestions[currentQuestionIndex] : questions[currentQuestionIndex])
+        : questions[0];
 
     const [userName, setUserName] = useState('');
     const [nameSubmitted, setNameSubmitted] = useState(false);
@@ -146,6 +155,7 @@ const Quiz = ({ data }) => {
         setScoreSubmitted(false);
         setSubmittingScore(false); // Ensure this is reset too
         setTimeLeft(10);
+        setDebugLog([]); // Clear log
         // Keep name for convenience
     };
 
@@ -160,6 +170,7 @@ const Quiz = ({ data }) => {
             );
 
             if (entryExists) {
+                addLog("Auto-detected score on leaderboard!");
                 setScoreSubmitted(true);
                 setSubmittingScore(false);
             }
@@ -169,16 +180,18 @@ const Quiz = ({ data }) => {
     const submitScore = async () => {
         if (submittingScore || scoreSubmitted) return;
         setSubmittingScore(true);
+        addLog("Starting submission...");
 
         const timeTaken = (endTime - startTime) / 1000;
 
         try {
             // Create a timeout promise
             const timeoutPromise = new Promise((_, reject) =>
-                setTimeout(() => reject(new Error("Request timed out")), 10000)
+                setTimeout(() => reject(new Error("Request timed out (10s)")), 10000)
             );
 
             // Race the addDoc against the timeout
+            addLog("Sending to Firestore...");
             await Promise.race([
                 addDoc(quizCollectionRef, {
                     name: userName,
@@ -189,8 +202,10 @@ const Quiz = ({ data }) => {
                 timeoutPromise
             ]);
 
+            addLog("Submission successful!");
             setScoreSubmitted(true);
         } catch (error) {
+            addLog(`Error: ${error.message}`);
             console.error("Error submitting score: ", error);
 
             // If it failed/timed out, double check if it actually made it (race condition)
@@ -200,9 +215,11 @@ const Quiz = ({ data }) => {
             );
 
             if (entryExists) {
+                addLog("Found entry despite error. Success.");
                 setScoreSubmitted(true);
             } else {
-                alert("Submission is taking longer than usual. Please check your internet or try again.");
+                addLog("Submission failed. Retrying manually might help.");
+                alert("Submission failed: " + error.message);
             }
         } finally {
             setSubmittingScore(false);
@@ -309,6 +326,14 @@ const Quiz = ({ data }) => {
                     )}
 
                     <button onClick={handleRestart} className="restart-btn" style={{ marginTop: '1rem' }}>Play Again 🔄</button>
+
+                    {/* Debug Log (Visible only if there are logs) */}
+                    {debugLog.length > 0 && (
+                        <div style={{ marginTop: '20px', padding: '10px', background: '#f8f9fa', borderRadius: '5px', fontSize: '0.8rem', color: '#666', textAlign: 'left', maxHeight: '100px', overflowY: 'auto' }}>
+                            <strong>Debug Log:</strong>
+                            {debugLog.map((log, i) => <div key={i}>{log}</div>)}
+                        </div>
+                    )}
                 </div>
 
                 {/* Leaderboard */}
