@@ -291,6 +291,66 @@ export const upcomingEvents = [
                     question: "Is there a registration fee?",
                     options: ["₹500 per team", "₹100 per person", "100% Free", "Only for finalists"],
                     correctAnswer: "100% Free"
+                },
+                {
+                    id: 6,
+                    question: "How many Google Cloud certifications does Dhiraj Chaudhari have?",
+                    options: ["5 certifications", "10 certifications", "14 certifications 🔥", "20 certifications"],
+                    correctAnswer: "14 certifications 🔥"
+                },
+                {
+                    id: 7,
+                    question: "What is Dhiraj's current employment status?",
+                    options: ["Google Employee", "Freelance Trainer", "Unemployed (but certified AF 😎)", "Startup Founder"],
+                    correctAnswer: "Unemployed (but certified AF 😎)"
+                },
+                {
+                    id: 8,
+                    question: "If Dhiraj has 14 Google Cloud certifications but no job, what does that make him?",
+                    options: ["Overqualified Legend 🏆", "Professional Student", "Cloud Collector", "Certification Hoarder"],
+                    correctAnswer: "Overqualified Legend 🏆"
+                },
+                {
+                    id: 9,
+                    question: "What's the most ironic thing about Dhiraj?",
+                    options: ["He trains others to get cloud jobs", "He has more certs than job offers 😅", "He's organizing a hackathon while job hunting", "All of the above 💯"],
+                    correctAnswer: "All of the above 💯"
+                },
+                {
+                    id: 10,
+                    question: "What should you do if you see Dhiraj at TechSprint?",
+                    options: ["Ask for career advice (ironically)", "Request a Google Cloud tutorial", "Offer him a job 🙏", "All of the above"],
+                    correctAnswer: "All of the above"
+                },
+                {
+                    id: 11,
+                    question: "Dhiraj's LinkedIn bio probably says:",
+                    options: ["Actively seeking opportunities", "14x Google Cloud Certified | Open to Work", "Professional Certification Collector", "Unemployed but Unstoppable 🚀"],
+                    correctAnswer: "14x Google Cloud Certified | Open to Work"
+                },
+                {
+                    id: 12,
+                    question: "What's Dhiraj's superpower?",
+                    options: ["Passing Google exams faster than getting interviews", "Teaching cloud while being on cloud nine (jobless)", "Turning unemployment into opportunity", "All of the above ⚡"],
+                    correctAnswer: "All of the above ⚡"
+                },
+                {
+                    id: 13,
+                    question: "If Dhiraj's certifications were currency, he'd be:",
+                    options: ["Broke but educated", "Rich in knowledge, poor in salary 💸", "A Google Cloud millionaire", "Still unemployed 😂"],
+                    correctAnswer: "Rich in knowledge, poor in salary 💸"
+                },
+                {
+                    id: 14,
+                    question: "What does Dhiraj do in his free time (which is all the time)?",
+                    options: ["Study for the 15th certification", "Organize hackathons for students", "Apply to jobs and get ghosted", "All of the above 🎯"],
+                    correctAnswer: "All of the above 🎯"
+                },
+                {
+                    id: 15,
+                    question: "The best way to describe Dhiraj's journey:",
+                    options: ["Certified genius, employment pending", "14 certs, 0 offers, 100% dedication 💪", "Living proof that certs ≠ jobs", "An inspiration to never give up"],
+                    correctAnswer: "14 certs, 0 offers, 100% dedication 💪"
                 }
             ]
         }

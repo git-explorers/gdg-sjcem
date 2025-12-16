@@ -151,7 +151,7 @@ const Quiz = ({ data }) => {
                                             <span className="rank-badge">{index + 1}</span>
                                         </div>
                                         <div className="name-col">{entry.name}</div>
-                                        <div className="score-col">{entry.score}/5</div>
+                                        <div className="score-col">{entry.score}/{questions.length}</div>
                                         <div className="time-col time-val">{entry.timeTaken?.toFixed(1)}s</div>
                                     </div>
                                 ))
@@ -226,7 +226,7 @@ const Quiz = ({ data }) => {
                                     <span className="rank-badge">{index + 1}</span>
                                 </div>
                                 <div className="name-col">{entry.name}</div>
-                                <div className="score-col">{entry.score}/5</div>
+                                <div className="score-col">{entry.score}/{questions.length}</div>
                                 <div className="time-col time-val">{entry.timeTaken?.toFixed(1)}s</div>
                             </div>
                         ))}
