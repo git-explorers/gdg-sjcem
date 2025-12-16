@@ -144,9 +144,29 @@ const Quiz = ({ data }) => {
         setStartTime(null);
         setEndTime(null);
         setScoreSubmitted(false);
+        setSubmittingScore(false); // Ensure this is reset too
         setTimeLeft(10);
         // Keep name for convenience
     };
+
+    // Auto-detect if score was successfully added (via real-time listener)
+    // This fixes the "Submitting..." stuck state if addDoc hangs but listener updates
+    useEffect(() => {
+        if (showResult && !scoreSubmitted && userName && endTime) {
+            const timeTaken = (endTime - startTime) / 1000;
+            // Check if an entry with same name, score and roughly same time exists
+            const entryExists = leaderboard.some(entry =>
+                entry.name === userName &&
+                entry.score === score &&
+                (Math.abs((entry.timeTaken || 0) - timeTaken) < 1.0) // 1s tolerance
+            );
+
+            if (entryExists) {
+                setScoreSubmitted(true);
+                setSubmittingScore(false);
+            }
+        }
+    }, [leaderboard, showResult, scoreSubmitted, userName, score, startTime, endTime]);
 
     const submitScore = async () => {
         if (submittingScore || scoreSubmitted) return;
