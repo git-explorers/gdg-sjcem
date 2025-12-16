@@ -11,6 +11,7 @@ const Quiz = ({ data }) => {
     const [selectedOption, setSelectedOption] = useState(null);
     const [isAnswered, setIsAnswered] = useState(false);
     const [showResult, setShowResult] = useState(false);
+    const [timeLeft, setTimeLeft] = useState(10); // 10 seconds per question
 
     const { title, description, questions } = data;
     const currentQuestion = questions[currentQuestionIndex];
@@ -23,11 +24,12 @@ const Quiz = ({ data }) => {
     const [submittingScore, setSubmittingScore] = useState(false);
     const [scoreSubmitted, setScoreSubmitted] = useState(false);
 
-    const quizCollectionRef = collection(db, 'techsprint_quiz_beta_1'); // Beta for testing
+    const quizCollectionRef = collection(db, 'techsprint_quiz_beta_1');
 
     // Fetch Leaderboard
     useEffect(() => {
-        const q = query(quizCollectionRef, orderBy('score', 'desc'), orderBy('timeTaken', 'asc'), limit(10));
+        // Increased limit to 50 as requested to see "all" (or significantly more)
+        const q = query(quizCollectionRef, orderBy('score', 'desc'), orderBy('timeTaken', 'asc'), limit(50));
         const unsubscribe = onSnapshot(q, (snapshot) => {
             const data = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
             setLeaderboard(data);
@@ -38,6 +40,20 @@ const Quiz = ({ data }) => {
         return () => unsubscribe();
     }, []);
 
+    // Timer Logic
+    useEffect(() => {
+        let timer;
+        if (started && !isAnswered && !showResult && timeLeft > 0) {
+            timer = setInterval(() => {
+                setTimeLeft((prev) => prev - 1);
+            }, 1000);
+        } else if (timeLeft === 0 && !isAnswered) {
+            // Time's up! Treat as incorrect/skipped
+            handleOptionClick(null, true);
+        }
+        return () => clearInterval(timer);
+    }, [started, isAnswered, showResult, timeLeft]);
+
     const handleStart = () => {
         if (!userName.trim()) {
             alert("Please enter your name first!");
@@ -46,15 +62,16 @@ const Quiz = ({ data }) => {
         setNameSubmitted(true);
         setStarted(true);
         setStartTime(Date.now());
+        setTimeLeft(10); // Reset timer for first question
     };
 
-    const handleOptionClick = (option) => {
+    const handleOptionClick = (option, isTimeout = false) => {
         if (isAnswered) return;
 
         setSelectedOption(option);
         setIsAnswered(true);
 
-        if (option === currentQuestion.correctAnswer) {
+        if (!isTimeout && option === currentQuestion.correctAnswer) {
             setScore(prev => prev + 1);
             if (currentQuestionIndex === questions.length - 1) {
                 confetti({
@@ -71,6 +88,7 @@ const Quiz = ({ data }) => {
                 setCurrentQuestionIndex(prev => prev + 1);
                 setSelectedOption(null);
                 setIsAnswered(false);
+                setTimeLeft(10); // Reset timer for next question
             } else {
                 setEndTime(Date.now());
                 setShowResult(true);
@@ -88,6 +106,7 @@ const Quiz = ({ data }) => {
         setStartTime(null);
         setEndTime(null);
         setScoreSubmitted(false);
+        setTimeLeft(10);
         // Keep name for convenience
     };
 
@@ -95,7 +114,10 @@ const Quiz = ({ data }) => {
         if (submittingScore || scoreSubmitted) return;
         setSubmittingScore(true);
 
-        const timeTaken = (endTime - startTime) / 1000; // seconds
+        // Calculate total time taken relative to questions * 10 or just use wall clock?
+        // Using wall clock is fine, but since we have a timer, users might wait. 
+        // Let's stick to wall clock for "timeTaken" leaderboard metric as before.
+        const timeTaken = (endTime - startTime) / 1000;
 
         try {
             await addDoc(quizCollectionRef, {
@@ -183,7 +205,7 @@ const Quiz = ({ data }) => {
             emoji = "😅";
         }
 
-        const timeTaken = ((endTime - startTime) / 1000).toFixed(1);
+        const atomicTimeTaken = ((endTime - startTime) / 1000).toFixed(1);
 
         return (
             <div className="quiz-section" data-aos="zoom-in">
@@ -192,7 +214,7 @@ const Quiz = ({ data }) => {
                     <h3 className="score-title">Quiz Completed!</h3>
                     <span className="score-value">{score} / {questions.length}</span>
                     <p className="score-message">{message}</p>
-                    <p style={{ marginBottom: '1rem', color: '#5f6368' }}>Time: <strong>{timeTaken}s</strong></p>
+                    <p style={{ marginBottom: '1rem', color: '#5f6368' }}>Total Time: <strong>{atomicTimeTaken}s</strong></p>
 
                     {!scoreSubmitted ? (
                         <button
@@ -221,7 +243,7 @@ const Quiz = ({ data }) => {
                     </div>
                     <div className="leaderboard-list">
                         {leaderboard.map((entry, index) => (
-                            <div key={entry.id} className={`leaderboard-item rank-${index + 1} ${entry.name === userName && entry.score === score && Math.abs(entry.timeTaken - timeTaken) < 0.1 ? 'highlight' : ''}`}>
+                            <div key={entry.id} className={`leaderboard-item rank-${index + 1} ${entry.name === userName && entry.score === score ? 'highlight' : ''}`}>
                                 <div className="rank-col">
                                     <span className="rank-badge">{index + 1}</span>
                                 </div>
@@ -240,9 +262,15 @@ const Quiz = ({ data }) => {
     return (
         <div className="quiz-section" data-aos="fade-up">
             <div className="quiz-question-container">
-                <div className="question-progress">
-                    Question {currentQuestionIndex + 1} of {questions.length}
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                    <div className="question-progress">
+                        Question {currentQuestionIndex + 1} of {questions.length}
+                    </div>
+                    <div className={`timer-badge ${timeLeft <= 3 ? 'danger' : ''}`}>
+                        ⏱️ {timeLeft}s
+                    </div>
                 </div>
+
                 <h4 className="question-text">{currentQuestion.question}</h4>
 
                 <div className="quiz-options">
