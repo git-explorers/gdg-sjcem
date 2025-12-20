@@ -452,10 +452,19 @@ const Quiz = ({ data = {} }) => {
 
     return (
         <div className="quiz-section" data-aos="fade-up">
+
+            {/* Progress Bar */}
+            <div className="progress-bar-container">
+                <div
+                    className="progress-bar-fill"
+                    style={{ width: `${((currentQuestionIndex + 1) / questions.length) * 100}%` }}
+                ></div>
+            </div>
+
             <div className="quiz-question-container">
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                     <div className="question-progress">
-                        Question {currentQuestionIndex + 1} of {questions.length}
+                        Question {currentQuestionIndex + 1} / {questions.length}
                     </div>
                     <div className={`timer-badge ${timeLeft <= 3 ? 'danger' : ''}`}>
                         ⏱️ {timeLeft}s
@@ -473,6 +482,8 @@ const Quiz = ({ data = {} }) => {
                             } else if (option === selectedOption) {
                                 btnClass += " incorrect";
                             }
+                        } else if (selectedOption === option) {
+                            btnClass += " selected";
                         }
 
                         return (

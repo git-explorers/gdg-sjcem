@@ -21,6 +21,14 @@
     margin-bottom: 20px;
 }
 
+.preloader-video {
+    width: 400px;
+    height: auto;
+    border-radius: 12px;
+    object-fit: contain;
+    margin-bottom: 20px;
+}
+
 .loading-indicator {
     display: flex;
     flex-direction: column;

@@ -27,6 +27,7 @@ import TeamDirectory from './components/TeamDirectory';
 import Blog from './components/Blog';
 import Newsletter from './components/Newsletter';
 import EventDetails from './components/EventDetails';
+import FeedbackList from './components/FeedbackList';
 import EventGallery from './components/EventGallery';
 import ProjectSubmission from './components/ProjectSubmission';
 import PageTransition from './components/PageTransition';
@@ -75,6 +76,7 @@ const AnimatedRoutes = () => {
         <Route path="/emails" element={<PageTransition><TeamEmails /></PageTransition>} />
         <Route path="/blog" element={<PageTransition><Blog /></PageTransition>} />
         <Route path="/events/:id" element={<PageTransition><EventDetails /></PageTransition>} />
+        <Route path="/events/:id/feedback" element={<PageTransition><FeedbackList /></PageTransition>} />
         <Route path="/projects" element={<PageTransition><Projects /></PageTransition>} />
         <Route path="/submit-idea" element={<PageTransition><ProjectSubmission /></PageTransition>} />
         <Route path="/leaderboard" element={<PageTransition><Leaderboard /></PageTransition>} />

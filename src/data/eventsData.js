@@ -679,6 +679,13 @@ export const upcomingEvents = [
         type: 'Session',
         title: 'TechSprint 2025 | Ask Me Anything & Hackathon Guidance Session',
         description: 'Join us for an important online guidance & AMA session as part of TechSprint 2025. Gain clarity on submissions, evaluation expectations, and execution strategy.',
+        codelab: {
+            title: 'Agentic App with Gemini 3 ADK',
+            description: 'Follow this code lab to learn about Agentic App with Gemini 3 ADK. Follow this step-by-step codelab to build and deploy your multi-agent AI system.',
+            link: 'https://codelabs.developers.google.com/agentic-app-gemini-3-adk#0',
+            isExternal: true,
+            buttonText: 'Start Code Lab 🚀'
+        },
         quiz: {
             title: "TechSprint Fun Trivia 🧠",
             description: "Test your knowledge about the event and our organizers! Top the leaderboard to win swag!",
@@ -753,6 +760,11 @@ export const upcomingEvents = [
                 text: 'Register / RSVP',
                 link: 'https://gdg.community.dev/events/details/google-gdg-on-campus-st-john-college-of-engineering-and-management-autonomous-palghar-india-presents-techsprint-2025-ask-me-anything-amp-hackathon-guidance-session/',
                 style: 'primary'
+            },
+            {
+                text: 'Join Session (Meet)',
+                link: 'https://meet.google.com/ghv-pdks-zsj?authuser=0&hs=122&ijlm=1765555890226',
+                style: 'outline'
             }
         ],
         agenda: [
@@ -773,6 +785,13 @@ export const upcomingEvents = [
                         linkedin: 'https://www.linkedin.com/in/dhirajchaudhari20/'
                     }
                 ]
+            },
+            {
+                time: 'Self-Paced',
+                title: 'Agentic App with Gemini 3 ADK',
+                description: 'Follow this code lab to learn about Agentic App with Gemini 3 ADK. Follow this step-by-step codelab to build and deploy your multi-agent AI system.',
+                link: 'https://codelabs.developers.google.com/agentic-app-gemini-3-adk#0',
+                linkText: 'Start Code Lab'
             }
         ]
     }

@@ -1,15 +1,16 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
-import { getFirestore, initializeFirestore, persistentLocalCache, persistentMultipleTabManager } from "firebase/firestore";
+import { initializeFirestore, memoryLocalCache } from "firebase/firestore";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyAyYRukMtQs2geKV189S2lU33VO0n4Y_tU",
-    authDomain: "gdg-codelab-6bcdd.firebaseapp.com",
-    projectId: "gdg-codelab-6bcdd",
-    storageBucket: "gdg-codelab-6bcdd.firebasestorage.app",
-    messagingSenderId: "434460704918",
-    appId: "1:434460704918:web:7aec0e5378985a51d402b7",
-    measurementId: "G-YFTB7ZDKRV"
+    apiKey: "AIzaSyCohKlqNu0I1sXcLW4D_fv-OEw9x0S50q8",
+    authDomain: "dc-infotechpvt-1-d1a4b.firebaseapp.com",
+    databaseURL: "https://dc-infotechpvt-1-d1a4b-default-rtdb.firebaseio.com",
+    projectId: "dc-infotechpvt-1-d1a4b",
+    storageBucket: "dc-infotechpvt-1-d1a4b.firebasestorage.app",
+    messagingSenderId: "622552457680",
+    appId: "1:622552457680:web:4b80e21e14e2b8266f19d5",
+    measurementId: "G-ZXPZGMNR44"
 };
 
 // Initialize Firebase
@@ -19,19 +20,11 @@ const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const googleProvider = new GoogleAuthProvider();
 
-// Initialize Firestore with offline persistence (HMR safe)
-let db;
-try {
-    db = initializeFirestore(app, {
-        localCache: persistentLocalCache({
-            tabManager: persistentMultipleTabManager()
-        })
-    });
-} catch (error) {
-    // If already initialized (e.g. by HMR/Hot Reload), use the existing instance
-    console.warn("Firestore already initialized, reusing instance to avoid crash.");
-    db = getFirestore(app);
-}
+// Initialize Firestore with explicit Memory Cache to avoid persistence locks
+const db = initializeFirestore(app, {
+    localCache: memoryLocalCache()
+});
+console.log("Firebase Firestore Initialized (Forced Memory Cache)");
 
 export { db };
 export default app;

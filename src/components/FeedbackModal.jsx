@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './FeedbackModal.css';
 
-const FeedbackModal = ({ isOpen, onClose, eventName }) => {
+const FeedbackModal = ({ isOpen, onClose, eventName, eventId }) => {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -26,13 +26,10 @@ const FeedbackModal = ({ isOpen, onClose, eventName }) => {
         e.preventDefault();
         setSubmitting(true);
 
-        // Simulate API call or real submission
-        // Ideally send to a sheet or database
         try {
-            // Creating a form data object for Web3Forms or similar
             const data = new FormData();
-            data.append("access_key", "98defd20-dee9-48a7-ac0f-e2fdd45d1f32"); // Reusing public key from EventDetails or generic
-            data.append("subject", `Feedback for ${eventName}`);
+            data.append("access_key", "98defd20-dee9-48a7-ac0f-e2fdd45d1f32");
+            data.append("subject", `Feedback for ${eventName} (ID: ${eventId})`);
             data.append("name", formData.name);
             data.append("email", formData.email);
             data.append("message", `Rating: ${formData.rating}/5\nLiked: ${formData.whatDidYouLike}\nImprovements: ${formData.improvements}`);
@@ -60,7 +57,7 @@ const FeedbackModal = ({ isOpen, onClose, eventName }) => {
             }
         } catch (error) {
             console.error(error);
-            alert("Error sending feedback.");
+            alert("Error sending feedback. Please try again.");
         } finally {
             setSubmitting(false);
         }

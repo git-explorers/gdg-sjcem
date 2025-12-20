@@ -45,7 +45,7 @@ const parseAgendaItem = (item) => {
 
 const AgendaCard = ({ item }) => {
     const [isExpanded, setIsExpanded] = useState(false);
-    const { time, title, speakers, cleanDescription } = parseAgendaItem(item);
+    const { time, title, speakers, cleanDescription, link, linkText } = parseAgendaItem(item);
 
     // Live Badge Logic
     const isLive = () => {
@@ -110,6 +110,29 @@ const AgendaCard = ({ item }) => {
             <div className={`google-agenda-body ${isExpanded ? 'show' : ''}`}>
                 <div className="google-agenda-desc">
                     <p>{cleanDescription}</p>
+
+                    {/* Action Link for Agenda Item */}
+                    {link && (
+                        <div style={{ marginTop: '15px', marginBottom: '10px' }}>
+                            <a
+                                href={link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="btn-primary-action"
+                                style={{
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '8px',
+                                    padding: '8px 16px',
+                                    fontSize: '0.9rem',
+                                    textDecoration: 'none',
+                                    borderRadius: '8px'
+                                }}
+                            >
+                                {linkText || 'View Details'} 🚀
+                            </a>
+                        </div>
+                    )}
 
                     <div className="google-agenda-meta-detail">
                         <span className="meta-badge-time">⏰ {time}</span>
@@ -535,7 +558,13 @@ const EventDetails = () => {
                         {/* High Visibility Codelab Button */}
                         <div style={{ marginBottom: '1.5rem', paddingBottom: '1.5rem', borderBottom: '1px solid #e0e0e0' }}>
                             <button
-                                onClick={handleStartCodelab}
+                                onClick={(e) => {
+                                    if (event.codelab?.isExternal) {
+                                        window.open(event.codelab.link, '_blank');
+                                    } else {
+                                        handleStartCodelab(e);
+                                    }
+                                }}
                                 className="sidebar-btn btn-primary-action"
                                 disabled={isCodelabLoading}
                                 style={{
@@ -569,7 +598,7 @@ const EventDetails = () => {
                                         <span>Opening...</span>
                                     </>
                                 ) : (
-                                    <>Start Codelab 🚀</>
+                                    <>{event.codelab?.buttonText || 'Start Codelab 🚀'}</>
                                 )}
                             </button>
                             <p style={{ fontSize: '0.8rem', color: '#5f6368', textAlign: 'center', marginTop: '0.5rem', marginBottom: 0 }}>
@@ -610,7 +639,6 @@ const EventDetails = () => {
                         >
                             Share Feedback ⭐
                         </button>
-
                         <button
                             className="sidebar-btn btn-outline-action"
                             style={{ marginTop: '0.5rem' }}
@@ -725,11 +753,11 @@ const EventDetails = () => {
                     </div>
                 )}
 
-                {/* Codelab CTA Section (TechSprint Only) */}
-                {event.id === 1 && (
+                {/* Codelab CTA Section (Dynamic) */}
+                {(event.id === 1 || event.codelab) && (
                     <div className="full-width-block" id="codelabs-section">
                         <div className="content-wrapper">
-                            <h3 className="section-title-premium">Hands-On Workshop Resources</h3>
+                            <h3 className="section-title-premium">{event.codelab?.title || 'Hands-On Workshop Resources'}</h3>
                             <div className="codelab-cta-card" style={{
                                 background: '#f8f9fa',
                                 padding: '30px',
@@ -738,14 +766,20 @@ const EventDetails = () => {
                                 border: '1px solid #e0e0e0'
                             }}>
                                 <h4 style={{ fontSize: '1.2rem', marginBottom: '1rem', color: '#202124' }}>
-                                    Build a Travel Agent using MCP Toolbox & ADK
+                                    {event.codelab?.description || 'Build a Travel Agent using MCP Toolbox & ADK'}
                                 </h4>
                                 <p style={{ color: '#5f6368', marginBottom: '1.5rem', maxWidth: '600px', margin: '0 auto 1.5rem' }}>
                                     Follow this step-by-step codelab to build and deploy your multi-agent AI system.
                                 </p>
 
                                 <button
-                                    onClick={handleStartCodelab}
+                                    onClick={(e) => {
+                                        if (event.codelab?.isExternal) {
+                                            window.open(event.codelab.link, '_blank');
+                                        } else {
+                                            handleStartCodelab(e);
+                                        }
+                                    }}
                                     className="btn-primary-action"
                                     disabled={isCodelabLoading}
                                     style={{
@@ -775,7 +809,7 @@ const EventDetails = () => {
                                             <span>Opening...</span>
                                         </>
                                     ) : (
-                                        <>Start Codelab 🚀</>
+                                        <>{event.codelab?.buttonText || 'Start Codelab 🚀'}</>
                                     )}
                                 </button>
                             </div>
@@ -1114,7 +1148,8 @@ const EventDetails = () => {
             <FeedbackModal
                 isOpen={isFeedbackModalOpen}
                 onClose={() => setIsFeedbackModalOpen(false)}
-                eventTitle={event.title}
+                eventName={event.title}
+                eventId={event.id}
             />
             {/* Floating Registration Bar */}
             <div className={`floating-registration-bar ${showFloatingBar ? 'show' : ''}`}>
