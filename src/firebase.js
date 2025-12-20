@@ -54,5 +54,5 @@ try {
     db = null;
 }
 
-export { db };
+export { db, auth, googleProvider };
 export default app;
