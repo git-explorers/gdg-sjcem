@@ -41,77 +41,109 @@ const WeeklyReportsList = () => {
         : reports;
 
     return (
-        <div className="weekly-report-container">
+        <div className="weekly-report-container" style={{ maxWidth: '1200px' }}>
             <div className="weekly-report-header">
                 <h2>Team Performance Monitor</h2>
                 <p>Review weekly submissions and progress.</p>
             </div>
 
-            <div style={{ marginBottom: '20px', textAlign: 'center' }}>
-                <select
-                    className="form-control"
-                    style={{ maxWidth: '300px', margin: '0 auto', display: 'inline-block' }}
-                    value={selectedWeek}
-                    onChange={(e) => setSelectedWeek(e.target.value)}
-                >
-                    <option value="">All Weeks</option>
-                    {weeks.map(week => (
-                        <option key={week} value={week}>Week Ending: {week}</option>
-                    ))}
-                </select>
+            <div style={{ marginBottom: '40px', textAlign: 'center' }}>
+                <div style={{ position: 'relative', display: 'inline-block', width: '300px' }}>
+                    <select
+                        className="form-control"
+                        style={{ width: '100%', appearance: 'none', cursor: 'pointer' }}
+                        value={selectedWeek}
+                        onChange={(e) => setSelectedWeek(e.target.value)}
+                    >
+                        <option value="">📅 All Weeks</option>
+                        {weeks.map(week => (
+                            <option key={week} value={week}>Week Ending: {week}</option>
+                        ))}
+                    </select>
+                    <div style={{ position: 'absolute', right: '15px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: '#666' }}>
+                        ▼
+                    </div>
+                </div>
             </div>
 
             {loading ? (
-                <div style={{ textAlign: 'center', padding: '40px' }}>Loading reports...</div>
+                <div style={{ textAlign: 'center', padding: '60px' }}>
+                    <div className="loading-spinner" style={{
+                        width: '40px', height: '40px', border: '3px solid #f3f3f3',
+                        borderTop: '3px solid #4285F4', borderRadius: '50%', margin: '0 auto 20px',
+                        animation: 'spin 1s linear infinite'
+                    }} />
+                    <p>Loading reports...</p>
+                    <style>{`@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`}</style>
+                </div>
             ) : (
                 <div className="reports-grid">
-                    {filteredReports.map((report, index) => (
-                        <motion.div
-                            key={report.id}
-                            className="weekly-report-card"
-                            style={{ padding: '25px', marginBottom: '20px' }}
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: index * 0.1 }}
-                        >
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
-                                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                    <h3 style={{ margin: 0, color: '#4285F4' }}>{report.name}</h3>
-                                    {report.role && <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary, #666)', marginTop: '4px' }}>{report.role}</span>}
-                                </div>
-                                <span style={{ fontSize: '0.9rem', color: '#888' }}>{report.weekEnding}</span>
-                            </div>
+                    {filteredReports.map((report, index) => {
+                        // Get initials
+                        const initials = report.name
+                            ? report.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()
+                            : '??';
 
-                            <div style={{ marginBottom: '15px' }}>
-                                <strong style={{ display: 'block', marginBottom: '5px', color: '#34A853' }}>Completed:</strong>
-                                <p style={{ whiteSpace: 'pre-wrap', margin: 0 }}>{report.tasksCompleted}</p>
-                            </div>
-
-                            {report.challenges && (
-                                <div style={{ marginBottom: '15px' }}>
-                                    <strong style={{ display: 'block', marginBottom: '5px', color: '#EA4335' }}>Challenges:</strong>
-                                    <p style={{ whiteSpace: 'pre-wrap', margin: 0 }}>{report.challenges}</p>
+                        return (
+                            <motion.div
+                                key={report.id}
+                                className="report-card-enhanced"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: index * 0.05 }}
+                            >
+                                <div className="report-header">
+                                    <div className="user-info">
+                                        <div className="user-avatar">{initials}</div>
+                                        <div className="user-details">
+                                            <h3>{report.name}</h3>
+                                            {report.role && <span className="user-role">{report.role}</span>}
+                                        </div>
+                                    </div>
+                                    <span className="report-date">{report.weekEnding}</span>
                                 </div>
-                            )}
 
-                            {report.nextWeekPlan && (
-                                <div style={{ marginBottom: '15px' }}>
-                                    <strong style={{ display: 'block', marginBottom: '5px', color: '#FBBC05' }}>Next Week:</strong>
-                                    <p style={{ whiteSpace: 'pre-wrap', margin: 0 }}>{report.nextWeekPlan}</p>
-                                </div>
-                            )}
+                                <div className="report-body">
+                                    <div className="report-section section-completed">
+                                        <div className="section-title">✅ Completed</div>
+                                        <div className="section-content">{report.tasksCompleted}</div>
+                                    </div>
 
-                            {report.prLinks && (
-                                <div style={{ marginTop: '15px', paddingTop: '15px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
-                                    <strong style={{ fontSize: '0.9rem' }}>Proof of Work:</strong>
-                                    <div style={{ fontSize: '0.9rem', wordBreak: 'break-all' }}>{report.prLinks}</div>
+                                    {report.challenges && (
+                                        <div className="report-section section-challenges">
+                                            <div className="section-title">🛑 Challenges</div>
+                                            <div className="section-content">{report.challenges}</div>
+                                        </div>
+                                    )}
+
+                                    {report.nextWeekPlan && (
+                                        <div className="report-section section-plan">
+                                            <div className="section-title">🔮 Next Week</div>
+                                            <div className="section-content">{report.nextWeekPlan}</div>
+                                        </div>
+                                    )}
                                 </div>
-                            )}
-                        </motion.div>
-                    ))}
+
+                                {report.prLinks && (
+                                    <div className="report-footer">
+                                        <div style={{ fontSize: '0.8rem', fontWeight: 'bold', marginBottom: '5px', color: '#555' }}>
+                                            🔗 Proof of Work
+                                        </div>
+                                        <div className="section-content" style={{ fontSize: '0.85rem', wordBreak: 'break-all' }}>
+                                            {report.prLinks}
+                                        </div>
+                                    </div>
+                                )}
+                            </motion.div>
+                        );
+                    })}
 
                     {filteredReports.length === 0 && (
-                        <p style={{ textAlign: 'center' }}>No reports found.</p>
+                        <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '60px', background: 'var(--card-bg)', borderRadius: '16px' }}>
+                            <div style={{ fontSize: '3rem', marginBottom: '20px' }}>📭</div>
+                            <h3>No Reports Found</h3>
+                            <p style={{ color: '#888' }}>There are no weekly reports for the selected period.</p>
+                        </div>
                     )}
                 </div>
             )}
