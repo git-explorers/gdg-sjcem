@@ -1206,11 +1206,10 @@ const EventDetails = () => {
                             </button>
                         </div>
                         <Swiper
-                            modules={[Navigation, Pagination, Autoplay]}
+                            modules={[Navigation, Autoplay]}
                             spaceBetween={0}
                             slidesPerView={1}
                             navigation
-                            pagination={{ clickable: true }}
                             autoplay={{ delay: 3000 }}
                             loop={true}
                             className="gallery-slider-full"

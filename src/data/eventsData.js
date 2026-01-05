@@ -222,7 +222,6 @@ export const upcomingEvents = [
             }
         ],
         gallery: [
-            "/videos/Kickoff V2.mp4",
             "/images/techsprint/kickoff/IMG_7930.JPG",
             "/images/techsprint/kickoff/IMG_7931.JPG",
             "/images/techsprint/kickoff/IMG_7932.JPG",
