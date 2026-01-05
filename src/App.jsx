@@ -1,3 +1,4 @@
+import GDGJourney from "./components/GDGJourney";
 import React, { useState, useEffect } from 'react';
 import { ThemeProvider } from './context/ThemeContext';
 import { AuthProvider } from './context/AuthContext';
@@ -48,6 +49,7 @@ import WeeklyReportsList from './components/WeeklyReportsList';
 const Home = () => (
   <>
     <Hero />
+    <GDGJourney />
     <About />
     <Events />
     <Gallery preview={true} />
