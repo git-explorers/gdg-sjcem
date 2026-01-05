@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import confetti from 'canvas-confetti';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { upcomingEvents, pastEvents } from '../data/eventsData';
@@ -174,6 +175,59 @@ const EventDetails = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [isCodelabLoading, setIsCodelabLoading] = useState(false);
+
+    // Reveal Strategy States
+    const [revealTimeLeft, setRevealTimeLeft] = useState({ hours: '00', minutes: '00', seconds: '00' });
+    const [canReveal, setCanReveal] = useState(false);
+    const [isRevealed, setIsRevealed] = useState(false);
+
+    useEffect(() => {
+        const targetDate = new Date('Jan 05, 2026 13:00:00 GMT+0530').getTime();
+
+        const interval = setInterval(() => {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            if (distance < 0) {
+                clearInterval(interval);
+                setCanReveal(true);
+                setRevealTimeLeft({ hours: '00', minutes: '00', seconds: '00' });
+            } else {
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                setRevealTimeLeft({
+                    hours: String(hours).padStart(2, '0'),
+                    minutes: String(minutes).padStart(2, '0'),
+                    seconds: String(seconds).padStart(2, '0')
+                });
+            }
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, []);
+
+    const handleReveal = () => {
+        setIsRevealed(true);
+        const duration = 3 * 1000;
+        const animationEnd = Date.now() + duration;
+        const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+        const random = (min, max) => Math.random() * (max - min) + min;
+
+        const interval = setInterval(function () {
+            const timeLeft = animationEnd - Date.now();
+
+            if (timeLeft <= 0) {
+                return clearInterval(interval);
+            }
+
+            const particleCount = 50 * (timeLeft / duration);
+            confetti(Object.assign({}, defaults, { particleCount, origin: { x: random(0.1, 0.3), y: Math.random() - 0.2 } }));
+            confetti(Object.assign({}, defaults, { particleCount, origin: { x: random(0.7, 0.9), y: Math.random() - 0.2 } }));
+        }, 250);
+    };
 
     const handleStartCodelab = (e) => {
         e.preventDefault();
@@ -975,22 +1029,53 @@ const EventDetails = () => {
                             {/* Top 10 Teams */}
                             <div className="results-block top-10" data-aos="fade-up">
                                 <h4 className="results-subtitle">Top 10 Teams</h4>
-                                {event.results.top10.length > 0 ? (
-                                    <div className="teams-grid">
-                                        {event.results.top10.map((team, index) => (
-                                            <div key={index} className="team-result-card" data-aos="fade-up" data-aos-delay={index * 50}>
-                                                <div className="team-rank">#{team.rank}</div>
-                                                <div className="team-info">
-                                                    <h4 className="team-name">{team.team}</h4>
+
+                                {!isRevealed ? (
+                                    <div className="reveal-container">
+                                        {canReveal ? (
+                                            <button className="reveal-button" onClick={handleReveal}>
+                                                <span className="reveal-icon">🚀</span> Reveal Results
+                                            </button>
+                                        ) : (
+                                            <div className="countdown-container">
+                                                <p>Results Revealing In:</p>
+                                                <div className="countdown-timer">
+                                                    <div className="timer-box">
+                                                        <span className="timer-value">{revealTimeLeft.hours}</span>
+                                                        <span className="timer-label">Hours</span>
+                                                    </div>
+                                                    <div className="timer-separator">:</div>
+                                                    <div className="timer-box">
+                                                        <span className="timer-value">{revealTimeLeft.minutes}</span>
+                                                        <span className="timer-label">Mins</span>
+                                                    </div>
+                                                    <div className="timer-separator">:</div>
+                                                    <div className="timer-box">
+                                                        <span className="timer-value">{revealTimeLeft.seconds}</span>
+                                                        <span className="timer-label">Secs</span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        ))}
+                                        )}
                                     </div>
                                 ) : (
-                                    <div className="results-pending-banner">
-                                        <span className="pending-icon-large">🏆</span>
-                                        <p>Top 10 Teams - To be Announced</p>
-                                    </div>
+                                    event.results.top10.length > 0 ? (
+                                        <div className="teams-grid">
+                                            {event.results.top10.map((team, index) => (
+                                                <div key={index} className="team-result-card" data-aos="fade-up" data-aos-delay={index * 100}>
+                                                    <div className="team-rank">#{team.rank}</div>
+                                                    <div className="team-info">
+                                                        <h4 className="team-name">{team.team}</h4>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <div className="results-pending-banner">
+                                            <span className="pending-icon-large">🏆</span>
+                                            <p>Top 10 Teams - To be Announced</p>
+                                        </div>
+                                    )
                                 )}
                             </div>
 
