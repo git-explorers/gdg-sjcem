@@ -28,7 +28,11 @@ export default function GDGJourney() {
   
         <div className="journey-grid">
           {journeyData.map((item, index) => (
-            <div className="journey-card" key={index}>
+            <div
+              className="journey-card"
+              key={index}
+              data-aos="fade-up"
+              data-aos-delay={index * 100}>          
               <div className="step">{index + 1}</div>
               <h3>{item.title}</h3>
               <p>{item.description}</p>
