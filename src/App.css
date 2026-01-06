@@ -111,3 +111,180 @@
   line-height: 1.6;
   color: #5f6368;
 }
+
+/* ===== Events & Activities Section ===== */
+
+.events-section {
+  padding: 100px 20px;
+  background-color: #ffffff;
+  height: auto;
+  overflow: visible;
+}
+
+
+.events-section h2 {
+  text-align: center;
+  font-size: 2.2rem;
+  margin-bottom: 50px;
+  color: #202124;
+}
+
+.events-grid {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  gap: 32px;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  grid-template-areas:
+    "card1 card2"
+    "card3 card4";
+  height: auto;
+}
+
+/* Force exact 2x2 grid placement */
+.card-1 { grid-area: card1; }
+.card-2 { grid-area: card2; }
+.card-3 { grid-area: card3; }
+.card-4 { grid-area: card4; }
+
+.events-card {
+  background: #f8f9fa;
+  padding: 28px;
+  border-radius: 16px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 200px;
+  height: 100%;
+}
+
+
+.events-card p {
+  margin: 6px 0;
+  color: #5f6368;
+  font-size: 0.95rem;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .events-grid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .events-card {
+    width: 100%;
+    max-width: 420px;
+  }
+}
+
+
+
+/* ===== Event Status Differentiation ===== */
+
+.events-card[data-status="active"] {
+  border-left: 6px solid #1a73e8;
+  background-color: #eef3fd;
+}
+
+.events-card[data-status="upcoming"] {
+  border-left: 6px solid #34a853;
+}
+
+.events-card[data-status="past"] {
+  opacity: 0.6;
+}
+
+.event-context {
+  font-size: 0.9rem;
+  color: #5f6368;
+  margin-bottom: 12px;
+  font-style: italic;
+}
+
+.event-cta {
+  margin-top: 16px;
+  padding: 10px 18px;
+  border-radius: 24px;
+  background-color: transparent;
+  border: 1px solid #1a73e8;
+  color: #1a73e8;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  transition: all 0.3s ease;
+}
+
+.cta-arrow {
+  transition: transform 0.3s ease;
+}
+
+.event-cta:hover {
+  background-color: #1a73e8;
+  color: #ffffff;
+}
+
+.events-card {
+  position: relative;
+}
+
+.event-badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  padding: 4px 10px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  border-radius: 12px;
+  color: white;
+}
+
+.event-badge.active {
+  background-color: #1a73e8;
+}
+
+.event-badge.upcoming {
+  background-color: #34a853;
+}
+
+.event-badge.past {
+  background-color: #9aa0a6;
+}
+
+.event-cta {
+  margin-top: 16px;
+  padding: 10px 18px;
+  border-radius: 24px;
+  background-color: transparent;
+  border: 1px solid #1a73e8;
+  color: #1a73e8;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+}
+
+.event-cta::after {
+  content: "→";
+  transition: transform 0.3s ease;
+}
+
+.event-cta:hover {
+  background-color: #1a73e8;
+  color: white;
+}
+
+.event-cta:hover::after {
+  transform: translateX(4px);
+}
