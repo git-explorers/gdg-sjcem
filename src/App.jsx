@@ -1,3 +1,4 @@
+import WhyJoinGDG from "./components/WhyJoinGDG";
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
@@ -63,6 +64,7 @@ import PageTransition from "./components/PageTransition";
 const Home = () => (
   <>
     <Hero />
+    <WhyJoinGDG />
     <GDGJourney />
     <EventsTimeline />
     <About />
